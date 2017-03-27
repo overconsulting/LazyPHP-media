@@ -1,0 +1,17 @@
+{
+    "name": "overconsulting/lazyphp-medias",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "ldandoy",
+            "email": "ldandoy@overconsulting.net"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-0": {
+            "System": "/"
+        }
+    }
+}
