@@ -6,6 +6,7 @@
     <thead>
         <tr>
             <th width="1%">ID</th>
+            <th>Aperçu</th>
             <th>Type</th>
             <th>Nom</th>
             <th>URL</th>
@@ -15,16 +16,35 @@
     <tbody>
 <?php
 foreach ($params['medias'] as $media) {
-    echo 
+    switch ($media->type) {
+        case 'image':
+            $thumbnail = '<';
+            break;
+
+        case 'video':
+            $thumbnail = '';
+            break;
+
+        case 'music':
+            $thumbnail = '';
+            break;
+
+        default:
+            $thumbnail = '';
+            break;
+    }
+
+    echo
         '<tr>'.
             '<td>'.$media->id.'</td>'.
+            '<td>'.$thumbnail.'</td>'.
             '<td>'.$params['typeOptions'][$media->type]['label'].'</td>'.
             '<td>'.$media->name.'</td>'.
             '<td>'.$media->url.'</td>'.
             '<td>';?>
                 {% button url="cockpit_media_medias_edit_<?php echo $media->id ?>" type="primary" size="xs" icon="pencil" content="" %}
                 {% button url="cockpit_media_medias_delete_<?php echo $media->id ?>" type="danger" size="xs" icon="trash-o" confirmation="Vous confirmer vouloir supprimer ce media?" %}<?php
-    echo 
+    echo
             '</td>'.
         '</tr>';
 }
