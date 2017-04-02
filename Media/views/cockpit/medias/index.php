@@ -1,4 +1,4 @@
-<h1 class="page-title">{{ pageTitle }}</h1>
+<h1 class="page-title"><i class="fa fa-picture-o"></i> {{ pageTitle }}</h1>
 <div class="box box-success">
     <div class="box-header">
         <h3 class="box-title">Liste des Medias</h3>
