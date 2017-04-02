@@ -2,13 +2,13 @@
 
 namespace Media\controllers\cockpit;
 
-use System\Controller;
+use app\controllers\cockpit\CockpitController;
 use System\Session;
 use System\Router;
 
 use Media\models\Media;
 
-class MediasController extends Controller
+class MediasController extends CockpitController
 {
     /*
      * @var Media\models\Media
