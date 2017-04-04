@@ -24,14 +24,14 @@
 foreach ($params['medias'] as $media) {
     switch ($media->type) {
         case 'image':
-            $thumbnail = '<';
+            $thumbnail = '';
             break;
 
         case 'video':
             $thumbnail = '';
             break;
 
-        case 'music':
+        case 'audio':
             $thumbnail = '';
             break;
 
