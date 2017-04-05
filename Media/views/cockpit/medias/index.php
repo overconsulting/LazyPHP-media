@@ -24,7 +24,7 @@
 foreach ($params['medias'] as $media) {
     switch ($media->type) {
         case 'image':
-            $thumbnail = '';
+            $thumbnail = print_r($media->image, true);
             break;
 
         case 'video':

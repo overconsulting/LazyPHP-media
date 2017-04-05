@@ -14,23 +14,6 @@ class Media extends Model
         'url'
     );
 
-    public function setData($data = array())
-    {
-        if (!is_array($data)) {
-            $data = (array)$data;
-        }
-
-        if (isset($data['image'])) {
-            $this->image = $data['image'];
-        } else if (isset($data['video'])) {
-            $this->video = $data['video'];
-        } else if (isset($data['audio'])) {
-            $this->audio = $data['audio'];
-        }
-
-        parent::setData($data);
-    }
-
     /**
      * Set default properties values
      */
@@ -64,20 +47,20 @@ class Media extends Model
 
     public function getAttachedFiles()
     {
-        return array_merge(parent::getAttachedFiles(), array(
+        return array_merge(
+            parent::getAttachedFiles(),
             array(
-                'name' => 'image',
-                'type' => 'image'
-            ),
-            array(
-                'name' => 'video',
-                'type' => 'video'
-            ),
-            array(
-                'name' => 'audio',
-                'type' => 'audio'
+                'image' => array(
+                    'type' => 'image'
+                ),
+                'video' => array(
+                    'type' => 'video'
+                ),
+                'audio' => array(
+                    'type' => 'audio'
+                )
             )
-        ));
+        );
     }
 
     public function getValidations()
