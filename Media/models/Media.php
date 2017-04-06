@@ -15,29 +15,6 @@ class Media extends Model
     );
 
     /**
-     * Ajout les données dans l'objet
-     *
-     * Cette fonction est appelé à l'instanciation de la classe pour
-     * charger les données dans l'objet
-     *
-     * @param array $data Contient les données à ajouter àl'objet
-     *
-     * @return void
-     */
-    public function setData($data = array())
-    {
-        if (isset($data['image'])) {
-            $this->image = $data['image'][0];
-        } else if (isset($data['video'])) {
-            $this->video = $data['video'][0];
-        } else if (isset($data['music'])) {
-            $this->music = $data['music'][0];
-        }
-
-        parent::setData($data);
-    }
-
-    /**
      * Set default properties values
      */
     public function setDefaultProperties()
@@ -61,48 +38,50 @@ class Media extends Model
                 'value' => 'video',
                 'label' => 'Video'
             ),
-            'music' => array(
-                'value' => 'music',
-                'label' => 'Music'
+            'audio' => array(
+                'value' => 'audio',
+                'label' => 'Audio'
             )
         );
     }
 
-    /**
-     * Validate the object and fill $this->errors with error messages
-     *
-     * @return bool
-     */
-    public function valid()
+    public function getAttachedFiles()
     {
-        $this->errors = array();
+        return array_merge(
+            parent::getAttachedFiles(),
+            array(
+                'image' => array(
+                    'type' => 'image'
+                ),
+                'video' => array(
+                    'type' => 'video'
+                ),
+                'audio' => array(
+                    'type' => 'audio'
+                )
+            )
+        );
+    }
 
-        if (!isset($this->type) || $this->type == '') {
-            $this->type = 'image';
-        }
+    public function getValidations()
+    {
+        $validations = parent::getValidations();
 
-        $this->name = trim($this->name);
-        if ($this->name == '') {
-            $this->errors['name'] = 'Nom obligatoire';
-        }
+        $validations = array_merge($validations, array(
+            'type' => array(
+                'type' => 'required',
+                'defaultValue' => 'image'
+            ),
+            'name' => array(
+                'type' => 'required',
+                'error' => 'Nom obligatoire'
+            )/*,
+            'image' => array(
+                'type' => 'required',
+                'error' => 'Image obligatoire'
+            )*/
+        ));
 
-        if (isset($this->image)) {
-            $validFile = $this->validFile($this->image, 'image');
-            if ($validFile !== true) {
-                $this->errors['image'] = $validFile;
-            }
-        } else if (isset($this->video)) {
-            $validFile = $this->validFile($this->video, 'video');
-            if ($validFile !== true) {
-                $this->errors['video'] = $validFile;
-            }
-        } else if (isset($this->music)) {
-            $validFile = $this->validFile($this->music, 'music');
-            if ($validFile !== true) {
-                $this->errors['music'] = $validFile;
-            }
-        }
-
-        return empty($this->errors);
+        return $validations;
     }
 }
