@@ -11,6 +11,9 @@ class Media extends Model
         'type',
         'name',
         'description',
+        'image',
+        'video',
+        'audio',
         'url'
     );
 
@@ -75,11 +78,7 @@ class Media extends Model
             'name' => array(
                 'type' => 'required',
                 'error' => 'Nom obligatoire'
-            )/*,
-            'image' => array(
-                'type' => 'required',
-                'error' => 'Image obligatoire'
-            )*/
+            )
         ));
 
         return $validations;
