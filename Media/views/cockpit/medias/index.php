@@ -22,21 +22,21 @@
             <tbody>
 <?php
 foreach ($params['medias'] as $media) {
+    $thumbnail = '';
     switch ($media->type) {
         case 'image':
-            $thumbnail = '<img src="'.$media->image.'" width="50" />';
+            if ($media->image->url != '') {
+                $thumbnail = '<img src="'.$media->image->url.'" width="50" />';
+            }
             break;
 
         case 'video':
-            $thumbnail = '';
             break;
 
         case 'audio':
-            $thumbnail = '';
             break;
 
         default:
-            $thumbnail = '';
             break;
     }
 
