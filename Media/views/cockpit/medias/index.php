@@ -26,7 +26,7 @@ foreach ($params['medias'] as $media) {
     switch ($media->type) {
         case 'image':
             if ($media->image->url != '') {
-                $thumbnail = '<img src="'.$media->image->url.'" width="50" />';
+                $thumbnail = '<img src="'.$media->image->url.'" width="50" height="50" />';
             }
             break;
 

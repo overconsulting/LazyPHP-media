@@ -64,20 +64,11 @@ class MediasController extends CockpitController
 
     public function createAction()
     {
-        if (!isset($this->request->post['active'])) {
-            $this->request->post['active'] = 0;
-        }
-
         $this->media = new Media();
-        $this->media->setData($this->request->post);
 
-        if ($this->media->valid()) {
-            if ($this->media->create((array)$this->media)) {
-                Session::addFlash('Media ajouté', 'success');
-                $this->redirect('cockpit_media_medias');
-            } else {
-                Session::addFlash('Erreur insertion base de données', 'danger');
-            };
+        if ($this->media->save($this->request->post)) {
+            Session::addFlash('Media ajouté', 'success');
+            $this->redirect('cockpit_media_medias');
         } else {
             Session::addFlash('Erreur(s) dans le formulaire', 'danger');
         }
@@ -87,20 +78,11 @@ class MediasController extends CockpitController
 
     public function updateAction($id)
     {
-        if (!isset($this->request->post['active'])) {
-            $this->request->post['active'] = 0;
-        }
-
         $this->media = Media::findById($id);
-        $this->media->setData($this->request->post);
 
-        if ($this->media->valid()) {
-            if ($this->media->update((array)$this->media)) {
-                Session::addFlash('Media modifié', 'success');
-                $this->redirect('cockpit_media_medias');
-            } else {
-                Session::addFlash('Erreur mise à jour base de données', 'danger');
-            }
+        if ($this->media->save($this->request->post)) {
+            Session::addFlash('Media modifié', 'success');
+            $this->redirect('cockpit_media_medias');
         } else {
             Session::addFlash('Erreur(s) dans le formulaire', 'danger');
         }
