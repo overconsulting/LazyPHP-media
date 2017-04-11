@@ -15,9 +15,15 @@ class SelectmediasController extends CockpitController
         $mediaTypes = isset($this->request->post['mediaTypes']) ? $this->request->post['mediaTypes'] : '';
         $mediaTypes = explode('|', $mediaTypes);
 
+        $medias = Media::findAll();
+
         $this->render(
             'select',
-            array()
+            array(
+                'medias' => $medias,
+                'mediaTypes' => $mediaTypes
+            ),
+            false
         );
     }
 }

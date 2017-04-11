@@ -1,3 +1,51 @@
-#select_media_dialog {
-	background: rgb(0, 0, 0)
+.lazy-dialog {
+	background: rgba(0,0,0,0.15);
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	padding: 30px;
+	z-index: 10000;
+}
+
+.lazy-dialog-content {
+	background: #fff;
+	position: relative;
+	width: 100%;
+	height: 100%;
+}
+
+.lazy-dialog-header {
+	padding: 10px;
+}
+
+.lazy-dialog-close {
+	cursor: pointer;
+	color: #000;
+	float: right;
+}
+
+.lazy-dialog-close:hover {
+	color: #ccc;
+}
+
+#select_media_dialog .medias {
+	margin: 0;
+	padding: 0;
+	text-align: center;
+}
+
+#select_media_dialog .medias .media {
+	display: inline-block;
+	margin-right: 20px;
+	margin-left: 20px;
+	width: 100px;
+	height: 100px;
+	position: relative;
+}
+
+#select_media_dialog .medias .media:hover, #select_media_dialog .medias .media.selected {
+	border: solid 3px blue;
+	cursor: pointer;
 }
