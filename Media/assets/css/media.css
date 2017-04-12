@@ -20,13 +20,20 @@
 	padding: 10px;
 }
 
-.lazy-dialog-close {
+.lazy-dialog-footer {
+	padding: 10px;
+	position: absolute;
+	right: 0;
+	bottom: 0;
+}
+
+.lazy-dialog-close-button {
 	cursor: pointer;
 	color: #000;
 	float: right;
 }
 
-.lazy-dialog-close:hover {
+.lazy-dialog-close-button:hover {
 	color: #ccc;
 }
 
@@ -37,6 +44,7 @@
 }
 
 #select_media_dialog .medias .media {
+	border: solid 3px #fff;
 	display: inline-block;
 	margin-right: 20px;
 	margin-left: 20px;
@@ -45,7 +53,12 @@
 	position: relative;
 }
 
-#select_media_dialog .medias .media:hover, #select_media_dialog .medias .media.selected {
+#select_media_dialog .medias .media:hover {
 	border: solid 3px blue;
+	cursor: pointer;
+}
+
+#select_media_dialog .medias .media.selected {
+	border: solid 3px red;
 	cursor: pointer;
 }

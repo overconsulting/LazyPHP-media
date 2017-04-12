@@ -1,3 +1,6 @@
+var mediaInputId = null;
+var mediaInputDisplay = null;
+
 $(document).ready(function() {
 	$("#formMedia select[name=type]").on("change", mediaTypeChange);
 	mediaTypeChange(null);
@@ -5,7 +8,7 @@ $(document).ready(function() {
 	$("#formMedia input[type=file].media").on("change", mediaTypeChange);
 	mediaTypeChange(null);
 
-	$(".selectMedias").on("click", selectMedias);
+	$(".input-media-button").on("click", selectMedias);
 });
 
 function mediaTypeChange(event) {
@@ -18,6 +21,11 @@ function mediaTypeChange(event) {
 
 function selectMedias(event)
 {
+	var $inputMediaButton = $(event.currentTarget);
+
+	mediaInputId = $inputMediaButton.data("inputId");
+	mediaInputDisplay = $inputMediaButton.data("inputDisplay");
+
 	var postData = new FormData();
 	postData.append("mediaTypes", "image");
 
@@ -43,9 +51,9 @@ function selectMediasSuccess(data, textStatus, jqXHR)
 	$("body").append(data);
 	selectMediasDialog = $("#select_media_dialog")[0];
 
-	$(".lazy-dialog-close").on("click", lazyDialogCloseClick);
-
 	$("#select_media_dialog .media").on("click", mediaClick);
+
+	$(".lazy-dialog-action").on("click", lazyDialogActionClick);
 }
 
 function selectMediasError(jqXHR, textStatus, errorThrown)
@@ -64,9 +72,30 @@ function mediaClick(event)
 	}
 }
 
-function lazyDialogCloseClick(event)
+function lazyDialogActionClick(event)
 {
-	var close = event.currentTarget;
-	var dialog = $(close).parents(".lazy-dialog");
-	dialog.remove();
+	var target = event.currentTarget;
+	var action = $(target).data("action");
+	var dialog = $(target).parents(".lazy-dialog");
+
+	switch (action) {
+		case "cancel":
+		case "close":
+			dialog.remove();
+			break;
+
+		case "valid":
+			var selectedMedias = $("#select_media_dialog .media.selected");
+			var s = "";
+			selectedMedias.each(function(index, element) {
+				s = s + $(element).data("mediaId");
+				if (index < selectedMedias.length - 1) {
+					s = s + ",";
+				}
+			});
+			$(mediaInputId).val(s);
+			$(mediaInputDisplay).val(s);
+			dialog.remove();
+			break;
+	}
 }

@@ -1,7 +1,7 @@
 <div id="select_media_dialog" class="lazy-dialog lazy-dialog-fullscreen">
     <div id="select_media_dialog_content" class="lazy-dialog-content">
         <div class="lazy-dialog-header">
-            <div class="pull-right lazy-dialog-close"><i class="fa fa-remove fa-2x"></i></div>
+            <div class="pull-right lazy-dialog-action lazy-dialog-close-button" data-action="close"><i class="fa fa-remove fa-2x"></i></div>
             <div class="clearfix"></div>
         </div>
         <div class="lazy-dialog-body">
@@ -35,8 +35,8 @@ foreach ($params['medias'] as $media) {
             </ul>
         </div>
         <div class="lazy-dialog-footer">
-            <div class="pull-right lazy-dialog-buttons">
-                {% button type="primary" content="OK" icon="check" %}
+            <div class="lazy-dialog-buttons">
+                <button class="btn btn-success lazy-dialog-action" data-action="valid"><i class="fa fa-check"></i>&nbsp;OK</button>
             </div>
         </div>
     </div>
