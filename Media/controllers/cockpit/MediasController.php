@@ -35,7 +35,7 @@ class MediasController extends CockpitController
         }
 
         $typeOptions = Media::getTypeOptions();
-
+        
         $this->render('edit', array(
             'id' => 0,
             'media' => $this->media,
