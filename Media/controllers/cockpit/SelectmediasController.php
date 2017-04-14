@@ -15,6 +15,8 @@ class SelectmediasController extends CockpitController
         $mediaTypes = isset($this->request->post['mediaTypes']) ? $this->request->post['mediaTypes'] : '';
         $mediaTypes = explode('|', $mediaTypes);
 
+        $multiple = isset($this->request->post['multiple']) && $this->request->post['multiple'] == '1';
+
         $medias = Media::findAll();
 
         $this->render(

@@ -1,5 +1,6 @@
 var mediaInputId = null;
 var mediaInputDisplay = null;
+var mediaSelectMultiple = 0;
 
 $(document).ready(function() {
 	$("#formMedia select[name=type]").on("change", mediaTypeChange);
@@ -25,77 +26,64 @@ function selectMedias(event)
 
 	mediaInputId = $inputMediaButton.data("inputId");
 	mediaInputDisplay = $inputMediaButton.data("inputDisplay");
+	mediaSelectMultiple = $inputMediaButton.data("selectMultiple");
 
 	var postData = new FormData();
 	postData.append("mediaTypes", "image");
 
-	$.ajax({
+	options = {
+		postData: postData,
+		id: "select_media_dialog",
+		title: "Medias",
 		url: "/cockpit/media/selectmedias/select",
-		method: "post",
-		data: postData,
-		processData: false,
-		contentType: false,
-		dataType: 'text',
-		success: selectMediasSuccess,
-		error: selectMediasError
-	});
+		actions: {
+			load: selectMediaLoad,
+//			"cancel": null,
+			valid: selectMediaValid
+		}
+	}
+	console.log(options);
+
+	lazyDialogOpen(options);
 
 	event.preventDefault();
 	return false;
 }
 
-function selectMediasSuccess(data, textStatus, jqXHR)
+function selectMediaLoad()
 {
-	$("#select_media_dialog").remove();
-	
-	$("body").append(data);
-	selectMediasDialog = $("#select_media_dialog")[0];
-
 	$("#select_media_dialog .media").on("click", mediaClick);
-
-	$(".lazy-dialog-action").on("click", lazyDialogActionClick);
-}
-
-function selectMediasError(jqXHR, textStatus, errorThrown)
-{
-	hideHourglass();
-	console.log(textStatus, errorThrown);
 }
 
 function mediaClick(event)
 {
 	var media = $(event.currentTarget);
-	if (media.hasClass("selected")) {
-		media.removeClass("selected");
+
+	if (mediaSelectMultiple == 1) {
+		if (media.hasClass("selected")) {
+			media.removeClass("selected");
+		} else {
+			media.addClass("selected");
+		}
 	} else {
+		$(".media").removeClass("selected");
 		media.addClass("selected");
 	}
 }
 
-function lazyDialogActionClick(event)
+function selectMediaValid()
 {
-	var target = event.currentTarget;
-	var action = $(target).data("action");
-	var dialog = $(target).parents(".lazy-dialog");
+   var selectedMedias = $("#select_media_dialog .media.selected");
+   var s = "";
 
-	switch (action) {
-		case "cancel":
-		case "close":
-			dialog.remove();
-			break;
+   selectedMedias.each(function(index, element) {
+           s = s + $(element).data("mediaId");
+           if (index < selectedMedias.length - 1) {
+                   s = s + ",";
+           }
+   });
+   $(mediaInputId).val(s);
+   $(mediaInputDisplay).val(s);
 
-		case "valid":
-			var selectedMedias = $("#select_media_dialog .media.selected");
-			var s = "";
-			selectedMedias.each(function(index, element) {
-				s = s + $(element).data("mediaId");
-				if (index < selectedMedias.length - 1) {
-					s = s + ",";
-				}
-			});
-			$(mediaInputId).val(s);
-			$(mediaInputDisplay).val(s);
-			dialog.remove();
-			break;
-	}
+   return true;
 }
