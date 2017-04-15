@@ -42,7 +42,6 @@ function selectMedias(event)
 			valid: selectMediaValid
 		}
 	}
-	console.log(options);
 
 	lazyDialogOpen(options);
 
@@ -57,28 +56,28 @@ function selectMediaLoad()
 
 function mediaClick(event)
 {
-	var media = $(event.currentTarget);
+	var $media = $(event.currentTarget);
 
 	if (mediaSelectMultiple == 1) {
-		if (media.hasClass("selected")) {
-			media.removeClass("selected");
+		if ($media.hasClass("selected")) {
+			$media.removeClass("selected");
 		} else {
-			media.addClass("selected");
+			$media.addClass("selected");
 		}
 	} else {
-		$(".media").removeClass("selected");
-		media.addClass("selected");
+		$media.removeClass("selected");
+		$media.addClass("selected");
 	}
 }
 
 function selectMediaValid()
 {
-   var selectedMedias = $("#select_media_dialog .media.selected");
+   var $selectedMedias = $("#select_media_dialog .media.selected");
    var s = "";
 
-   selectedMedias.each(function(index, element) {
+   $selectedMedias.each(function(index, element) {
            s = s + $(element).data("mediaId");
-           if (index < selectedMedias.length - 1) {
+           if (index < $selectedMedias.length - 1) {
                    s = s + ",";
            }
    });
