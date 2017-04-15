@@ -1,88 +1,98 @@
 var mediaInputId = null;
-var mediaInputDisplay = null;
+var mediaInputDisplayId = null;
 var mediaSelectMultiple = 0;
+var mediaOnValid = null;
+var selectedMedias = [];
 
 $(document).ready(function() {
-	$("#formMedia select[name=type]").on("change", mediaTypeChange);
-	mediaTypeChange(null);
+    $("#formMedia select[name=type]").on("change", mediaTypeChange);
+    mediaTypeChange(null);
 
-	$("#formMedia input[type=file].media").on("change", mediaTypeChange);
-	mediaTypeChange(null);
+    $("#formMedia input[type=file].media").on("change", mediaTypeChange);
+    mediaTypeChange(null);
 
-	$(".input-media-button").on("click", selectMedias);
+    $(".input-media-button").on("click", selectMedias);
 });
 
 function mediaTypeChange(event) {
-	var type = $("select[name=type]")[0];
-	if (type != null) {
-		$("#formMedia input[type=file].media").parents(".form-group").hide();
-		$("#formMedia input[type=file].media.media-"+type.options[type.selectedIndex].value).parents(".form-group").show();
-	}
+    var type = $("select[name=type]")[0];
+    if (type != null) {
+        $("#formMedia input[type=file].media").parents(".form-group").hide();
+        $("#formMedia input[type=file].media.media-"+type.options[type.selectedIndex].value).parents(".form-group").show();
+    }
 }
 
 function selectMedias(event)
 {
-	var $inputMediaButton = $(event.currentTarget);
+    var $inputMediaButton = $(event.currentTarget);
 
-	mediaInputId = $inputMediaButton.data("inputId");
-	mediaInputDisplay = $inputMediaButton.data("inputDisplay");
-	mediaSelectMultiple = $inputMediaButton.data("selectMultiple");
+    mediaInputId = $inputMediaButton.data("inputId");
+    mediaInputDisplayId = $inputMediaButton.data("inputDisplayId");
+    mediaSelectMultiple = $inputMediaButton.data("selectMultiple");
+    mediaOnValid = $inputMediaButton.data("onValid");
 
-	var postData = new FormData();
-	postData.append("mediaTypes", "image");
+    if (mediaOnValid != null && typeof window[mediaOnValid] === 'function') {
+        selectMediaValidFunctions = [selectMediaValid, window[mediaOnValid]];
+    } else {
+        selectMediaValidFunctions = [selectMediaValid];
+    }
 
-	options = {
-		postData: postData,
-		id: "select_media_dialog",
-		title: "Medias",
-		url: "/cockpit/media/selectmedias/select",
-		actions: {
-			load: selectMediaLoad,
-//			"cancel": null,
-			valid: selectMediaValid
-		}
-	}
+    var postData = new FormData();
+    postData.append("mediaTypes", "image");
 
-	lazyDialogOpen(options);
+    options = {
+        postData: postData,
+        id: "select_media_dialog",
+        title: "Medias",
+        url: "/cockpit/media/selectmedias/select",
+        actions: {
+            load: selectMediaLoad,
+//          "cancel": null,
+            valid: selectMediaValidFunctions
+        }
+    };
 
-	event.preventDefault();
-	return false;
+    lazyDialogOpen(options);
+
+    event.preventDefault();
+    return false;
 }
 
 function selectMediaLoad()
 {
-	$("#select_media_dialog .media").on("click", mediaClick);
+    $("#select_media_dialog .media").on("click", mediaClick);
 }
 
 function mediaClick(event)
 {
-	var $media = $(event.currentTarget);
+    var $media = $(event.currentTarget);
 
-	if (mediaSelectMultiple == 1) {
-		if ($media.hasClass("selected")) {
-			$media.removeClass("selected");
-		} else {
-			$media.addClass("selected");
-		}
-	} else {
-		$media.removeClass("selected");
-		$media.addClass("selected");
-	}
+    if (mediaSelectMultiple == "1") {
+        if ($media.hasClass("selected")) {
+            $media.removeClass("selected");
+        } else {
+            $media.addClass("selected");
+        }
+    } else {
+        $media.removeClass("selected");
+        $media.addClass("selected");
+    }
 }
 
 function selectMediaValid()
 {
-   var $selectedMedias = $("#select_media_dialog .media.selected");
-   var s = "";
+    var $selectedMedias = $("#select_media_dialog .media.selected");
+    var s = "";
 
-   $selectedMedias.each(function(index, element) {
-           s = s + $(element).data("mediaId");
-           if (index < $selectedMedias.length - 1) {
-                   s = s + ",";
-           }
-   });
-   $(mediaInputId).val(s);
-   $(mediaInputDisplay).val(s);
+    selectedMedias = [];
+    $selectedMedias.each(function(index, element) {
+        mediaId = parseInt($(element).data("mediaId"));
+        selectedMedias.push(mediaId);
+    });
 
-   return true;
+    s = selectedMedias.join(",");
+    $("#"+mediaInputId).val(s);
+    $("#"+mediaInputDisplayId).val(s);
+
+    return true;
 }
