@@ -83,4 +83,28 @@ class Media extends Model
 
         return $validations;
     }
+
+    public function getHtml()
+    {
+        $html = '';
+
+        switch ($this->type) {
+            case 'image':
+                $html = '<img src="'.$this->image->url.'" />';
+                break;
+
+            case 'video':
+                $html = '<img src="" />';
+                break;
+
+            case 'audio':
+                $html = '<img src="" />';
+                break;
+            
+            default:
+                break;
+        }
+
+        return $html;
+    }
 }

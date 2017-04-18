@@ -1,6 +1,6 @@
 var mediaInputId = null;
 var mediaInputDisplayId = null;
-var mediaSelectMultiple = 0;
+var mediaSelectMultiple = false;
 var mediaOnValid = null;
 var selectedMedias = [];
 
@@ -30,6 +30,7 @@ function selectMedias(event)
     mediaInputDisplayId = $inputMediaButton.data("inputDisplayId");
     mediaSelectMultiple = $inputMediaButton.data("selectMultiple");
     mediaOnValid = $inputMediaButton.data("onValid");
+    console.log(mediaSelectMultiple);
 
     if (mediaOnValid != null && typeof window[mediaOnValid] === 'function') {
         selectMediaValidFunctions = [selectMediaValid, window[mediaOnValid]];
@@ -74,7 +75,7 @@ function mediaClick(event)
             $media.addClass("selected");
         }
     } else {
-        $media.removeClass("selected");
+        $(".media").removeClass("selected");
         $media.addClass("selected");
     }
 }

@@ -1,4 +1,11 @@
-<ul class="medias">
+<ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#medias_medias" role="tab" data-toggle="tab">Medias communs</a></li>
+    <li role="presentation"><a href="#medias_products" role="tab" data-toggle="tab">Medias produits</a></li>
+    <li role="presentation"><a href="#medias_add" role="tab" data-toggle="tab"><i class="fa fa-plus"></i>&nbsp;Nouveau media</a></li>
+</ul>
+<div class="tab-content">
+    <div id="medias_medias" class="tab-pane active fade in" role="tabpanel">
+        <ul class="medias">
 
 <?php
 
@@ -27,4 +34,8 @@ foreach ($params['medias'] as $media) {
 
 ?>
 
-</ul>
+        </ul>
+    </div>
+    <div id="medias_products" class="tab-pane fade" role="tabpanel">
+    </div>
+</div>
