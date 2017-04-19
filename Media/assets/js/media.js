@@ -30,7 +30,6 @@ function selectMedias(event)
     mediaInputDisplayId = $inputMediaButton.data("inputDisplayId");
     mediaSelectMultiple = $inputMediaButton.data("selectMultiple");
     mediaOnValid = $inputMediaButton.data("onValid");
-    console.log(mediaSelectMultiple);
 
     if (mediaOnValid != null && typeof window[mediaOnValid] === 'function') {
         selectMediaValidFunctions = [selectMediaValid, window[mediaOnValid]];
@@ -62,6 +61,7 @@ function selectMedias(event)
 function selectMediaLoad()
 {
     $("#select_media_dialog .media").on("click", mediaClick);
+    $("#formSelectMediasAdd").on("submit", mediaAddClick);
 }
 
 function mediaClick(event)
@@ -78,6 +78,42 @@ function mediaClick(event)
         $(".media").removeClass("selected");
         $media.addClass("selected");
     }
+}
+
+function mediaAddClick(event)
+{
+    var formAdd = document.getElementById("formSelectMediasAdd");
+
+    var postData = new FormData(formAdd);
+
+    $.ajax({
+        url: formAdd.action,
+        method: "post",
+        data: postData,
+        processData: false,
+        contentType: false,
+        dataType: 'text',
+        success: mediaAddSuccess,
+        error: mediaAddError
+    });
+
+    event.preventDefault();
+    return false;
+}
+
+function mediaAddSuccess(data, textStatus, jqXHR)
+{
+    res = JSON.parse(data);
+    if (res.error) {
+        alert(res.message);
+    } else {
+        $(".input-media-button").click();
+    }
+}
+
+function mediaAddError(jqXHR, textStatus, errorThrown)
+{
+    console.log(textStatus, errorThrown);
 }
 
 function selectMediaValid()

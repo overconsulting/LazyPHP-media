@@ -84,6 +84,22 @@ class Media extends Model
         return $validations;
     }
 
+    public function valid()
+    {
+        $res = parent::valid();
+
+        if ($res) {
+            if ($this->image->uploadedFile === null && $this->video->uploadedFile === null && $this->audio->uploadedFile === null && $this->url === null) {
+                $error = 'Vous devez sélectionner un fichier';
+                $this->errors['image'] = $error;
+                $this->errors['video'] = $error;
+                $this->errors['audio'] = $error;
+            }
+        }
+
+        return empty($this->errors);
+    }
+
     public function getHtml()
     {
         $html = '';

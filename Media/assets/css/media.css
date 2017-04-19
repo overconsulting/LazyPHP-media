@@ -23,3 +23,7 @@
 	border: solid 3px red;
 	cursor: pointer;
 }
+
+#select_media_dialog .tab-pane {
+	padding-top: 20px;
+}

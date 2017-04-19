@@ -38,4 +38,14 @@ foreach ($params['medias'] as $media) {
     </div>
     <div id="medias_products" class="tab-pane fade" role="tabpanel">
     </div>
+    <div id="medias_add" class="tab-pane fade" role="tabpanel">
+        <div class="row">
+            <div class="col-xs-8 col-xs-offset-2">
+                {% form_open id="formSelectMediasAdd" action="formSelectMediasAddAction" class="form-horizontal" %}
+                    {% input_image name="image" label="Choisissez le media à ajouter" class="media media-image" thumbnail="0" %}
+                    {% input_submit id="submitSelectMediasAdd" name="submit" value="save" formId="formSelectMediasAdd" class="btn-primary" icon="plus" label="Ajouter" %}
+                {% form_close %}
+            </div>
+        </div>
+    </div>
 </div>

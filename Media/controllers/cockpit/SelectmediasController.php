@@ -17,15 +17,42 @@ class SelectmediasController extends CockpitController
 
         $multiple = isset($this->request->post['multiple']) && $this->request->post['multiple'] == '1';
 
-        $medias = Media::findAll();
+        $medias = Media::findAll(
+            '',
+            array(
+                'column' => 'created_at',
+                'order' => 'desc'
+            )
+        );
 
         $this->render(
             'select',
             array(
                 'medias' => $medias,
-                'mediaTypes' => $mediaTypes
+                'mediaTypes' => $mediaTypes,
+                'formSelectMediasAddAction' => '/cockpit/media/selectmedias/add'
             ),
             false
         );
+    }
+
+    public function addAction()
+    {
+        $res = array(
+            'error' => false,
+            'message' => ''
+        );
+
+        $media = new Media();
+        $media->type = 'image';
+        $media->name = date('YmdHis');
+
+        if ($media->save($this->request->post)) {
+        } else {
+            $res['error'] = true;
+            $res['message'] = $media->errors['image'];
+        }
+
+        echo json_encode($res);
     }
 }
