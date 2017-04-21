@@ -1,6 +1,8 @@
 var mediaInputId = null;
 var mediaInputDisplayId = null;
-var mediaSelectMultiple = false;
+var mediaSelectMultiple = "0";
+var mediaType = "";
+var mediaCategory = "";
 var mediaOnValid = null;
 var selectedMedias = [];
 
@@ -29,8 +31,11 @@ function selectMedias(event)
     mediaInputId = $inputMediaButton.data("inputId");
     mediaInputDisplayId = $inputMediaButton.data("inputDisplayId");
     mediaSelectMultiple = $inputMediaButton.data("selectMultiple");
-    mediaOnValid = $inputMediaButton.data("onValid");
 
+    mediaType = $inputMediaButton.data("type");
+    mediaCategory = $inputMediaButton.data("category");
+
+    mediaOnValid = $inputMediaButton.data("onValid");
     if (mediaOnValid != null && typeof window[mediaOnValid] === 'function') {
         selectMediaValidFunctions = [selectMediaValid, window[mediaOnValid]];
     } else {
@@ -38,13 +43,14 @@ function selectMedias(event)
     }
 
     var postData = new FormData();
-    postData.append("mediaTypes", "image");
+    postData.append("mediaType", mediaType);
+    postData.append("mediaCategory", mediaCategory);
 
     options = {
         postData: postData,
         id: "select_media_dialog",
         title: "Medias",
-        url: "/cockpit/media/selectmedias/select",
+        url: "/media/selectmedias/select",
         actions: {
             load: selectMediaLoad,
 //          "cancel": null,

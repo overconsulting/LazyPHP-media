@@ -9,6 +9,7 @@ class Media extends Model
 {
     protected $permittedColumns = array(
         'type',
+        'category',
         'name',
         'description',
         'image',
@@ -98,6 +99,11 @@ class Media extends Model
         }
 
         return empty($this->errors);
+    }
+
+    public function getUrl()
+    {
+        return $this->{$this->type} != '' ? $this->{$this->type}->url :  '';
     }
 
     public function getHtml()

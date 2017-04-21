@@ -1,24 +1,31 @@
 <?php
 
-namespace Media\controllers\cockpit;
+namespace Media\controllers;
 
-use app\controllers\cockpit\CockpitController;
+use app\controllers\FrontController;
 use System\Session;
 use System\Router;
 
 use Media\models\Media;
 
-class SelectmediasController extends CockpitController
+class SelectmediasController extends FrontController
 {
     public function selectAction()
     {
-        $mediaTypes = isset($this->request->post['mediaTypes']) ? $this->request->post['mediaTypes'] : '';
-        $mediaTypes = explode('|', $mediaTypes);
+        $where = '';
 
-        $multiple = isset($this->request->post['multiple']) && $this->request->post['multiple'] == '1';
+        $mediaType = isset($this->request->post['mediaType']) ? $this->request->post['mediaType'] : '';
+        if ($mediaType != '') {
+            $where = ' type = '.$mediaType;
+        }
+
+        $mediaCategory = isset($this->request->post['mediaCategory']) && $this->request->post['mediaCategory'] == '';
+        if ($mediaCategory != '') {
+            $where = ' category = '.$mediaCategory;
+        }
 
         $medias = Media::findAll(
-            '',
+            $where,
             array(
                 'column' => 'created_at',
                 'order' => 'desc'
@@ -29,8 +36,8 @@ class SelectmediasController extends CockpitController
             'select',
             array(
                 'medias' => $medias,
-                'mediaTypes' => $mediaTypes,
-                'formSelectMediasAddAction' => '/cockpit/media/selectmedias/add'
+                'mediaType' => $mediaType,
+                'formSelectMediasAddAction' => '/media/selectmedias/add'
             ),
             false
         );
