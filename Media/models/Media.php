@@ -84,6 +84,10 @@ class Media extends Model
     {
         $res = parent::valid();
 
+        if ($this->mediacategory_id == '') {
+            $this->mediacategory_id = null;
+        }
+
         if ($this->image->uploadedFile === null && $this->video->uploadedFile === null && $this->audio->uploadedFile === null && $this->url === null) {
             $error = 'Vous devez sélectionner un fichier';
             $this->errors['image'] = $error;
