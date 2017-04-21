@@ -7,6 +7,7 @@ use System\Session;
 use System\Router;
 
 use Media\models\Media;
+use Media\models\MediaCategory;
 
 class MediasController extends CockpitController
 {
@@ -35,11 +36,14 @@ class MediasController extends CockpitController
         }
 
         $typeOptions = Media::getTypeOptions();
+
+        $mediacategoryOptions = MediaCategory::getOptions();
         
         $this->render('edit', array(
             'id' => 0,
             'media' => $this->media,
             'typeOptions' => $typeOptions,
+            'mediacategoryOptions' => $mediacategoryOptions,
             'pageTitle' => 'Nouveau media',
             'formAction' => Router::url('cockpit_media_medias_create')
         ));
@@ -53,10 +57,13 @@ class MediasController extends CockpitController
 
         $typeOptions = Media::getTypeOptions();
 
+        $mediacategoryOptions = MediaCategory::getOptions();
+
         $this->render('edit', array(
             'id' => $id,
             'media' => $this->media,
             'typeOptions' => $typeOptions,
+            'mediacategoryOptions' => $mediacategoryOptions,
             'pageTitle' => 'Modification media n°'.$id,
             'formAction' => Router::url('cockpit_media_medias_update_'.$id)
         ));

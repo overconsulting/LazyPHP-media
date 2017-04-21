@@ -32,8 +32,15 @@ function selectMedias(event)
     mediaInputDisplayId = $inputMediaButton.data("inputDisplayId");
     mediaSelectMultiple = $inputMediaButton.data("selectMultiple");
 
-    mediaType = $inputMediaButton.data("type");
-    mediaCategory = $inputMediaButton.data("category");
+    mediaType = $inputMediaButton.data("mediaType");
+    if (mediaType == null) {
+        mediaType = "";
+    }
+
+    mediaCategory = $inputMediaButton.data("mediaCategory");
+    if (mediaCategory == null) {
+        mediaCategory = "";
+    }
 
     mediaOnValid = $inputMediaButton.data("onValid");
     if (mediaOnValid != null && typeof window[mediaOnValid] === 'function') {

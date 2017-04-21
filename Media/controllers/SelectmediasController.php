@@ -7,24 +7,30 @@ use System\Session;
 use System\Router;
 
 use Media\models\Media;
+use Media\models\MediaCategory;
 
 class SelectmediasController extends FrontController
 {
     public function selectAction()
     {
-        $where = '';
+        $where = array();
 
         $mediaType = isset($this->request->post['mediaType']) ? $this->request->post['mediaType'] : '';
         if ($mediaType != '') {
-            $where = ' type = '.$mediaType;
+            $where[] = 'type = \''.$mediaType.'\'';
         }
 
-        $mediaCategory = isset($this->request->post['mediaCategory']) && $this->request->post['mediaCategory'] == '';
+        $mediaCategory = isset($this->request->post['mediaCategory']) ? $this->request->post['mediaCategory'] : '';
         if ($mediaCategory != '') {
-            $where = ' category = '.$mediaCategory;
+            $mediaCategory = MediaCategory::findByCode($mediaCategory);
+            $where[] = 'mediacategory_id = '.$mediaCategory->id;
         }
 
-        $medias = Media::findAll(
+        if (!empty($where)) {
+            $where = implode(' and ', $where);
+        }
+
+        $allMedias = Media::findAll(
             $where,
             array(
                 'column' => 'created_at',
@@ -32,11 +38,29 @@ class SelectmediasController extends FrontController
             )
         );
 
+        $active = '';
+        $mediaGroups = array();
+        foreach ($allMedias as $media) {
+            $key = (int)$media->mediacategory_id;
+            if (isset($mediaGroups[$key])) {
+                $mediaGroups[$key]['items'][] = $media;
+            } else {
+                $mediaGroups[$key]['code'] = $key != 0 ? $media->mediacategory->code : 'medias';
+                $mediaGroups[$key]['label'] = $key != 0 ? strtolower($media->mediacategory->label) : 'commun';
+                $mediaGroups[$key]['items'] = array($media);
+                if ($active == '') {
+                    $mediaGroups[$key]['active'] = true;
+                }
+            }
+        }
+        ksort($mediaGroups);
+
         $this->render(
             'select',
             array(
-                'medias' => $medias,
+                'mediaGroups' => $mediaGroups,
                 'mediaType' => $mediaType,
+                'mediaCategory' => $mediaCategory,
                 'formSelectMediasAddAction' => '/media/selectmedias/add'
             ),
             false
@@ -51,7 +75,6 @@ class SelectmediasController extends FrontController
         );
 
         $media = new Media();
-        $media->type = 'image';
         $media->name = date('YmdHis');
 
         if ($media->save($this->request->post)) {

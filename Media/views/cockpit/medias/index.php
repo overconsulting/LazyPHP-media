@@ -14,6 +14,7 @@
                     <th width="1%">ID</th>
                     <th>Aperçu</th>
                     <th>Type</th>
+                    <th>Catégorie</th>
                     <th>Nom</th>
                     <th>URL</th>
                     <th width="10%">Actions</th>
@@ -40,11 +41,14 @@ foreach ($params['medias'] as $media) {
             break;
     }
 
+    $mediaCategory = $media->mediacategory !== null ? $media->mediacategory->label : '';
+
     echo
         '<tr>'.
             '<td>'.$media->id.'</td>'.
             '<td>'.$thumbnail.'</td>'.
             '<td>'.$params['typeOptions'][$media->type]['label'].'</td>'.
+            '<td>'.$mediaCategory.'</td>'.
             '<td>'.$media->name.'</td>'.
             '<td>'.$media->url.'</td>'.
             '<td>';?>

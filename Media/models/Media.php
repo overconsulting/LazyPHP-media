@@ -9,7 +9,7 @@ class Media extends Model
 {
     protected $permittedColumns = array(
         'type',
-        'category',
+        'mediacategory_id',
         'name',
         'description',
         'image',
@@ -29,22 +29,17 @@ class Media extends Model
     }
 
     /**
-     * Get media type options for a select input
+     * Get list of associed table(s)
+     *
+     * @return mixed
      */
-    public static function getTypeOptions()
+    public function getAssociations()
     {
         return array(
-            'image' => array(
-                'value' => 'image',
-                'label' => 'Image'
-            ),
-            'video' => array(
-                'value' => 'video',
-                'label' => 'Video'
-            ),
-            'audio' => array(
-                'value' => 'audio',
-                'label' => 'Audio'
+            'mediacategory' => array(
+                'type' => '1',
+                'model' => 'Media\\models\\MediaCategory',
+                'key' => 'mediacategory_id'
             )
         );
     }
@@ -89,16 +84,35 @@ class Media extends Model
     {
         $res = parent::valid();
 
-        if ($res) {
-            if ($this->image->uploadedFile === null && $this->video->uploadedFile === null && $this->audio->uploadedFile === null && $this->url === null) {
-                $error = 'Vous devez sélectionner un fichier';
-                $this->errors['image'] = $error;
-                $this->errors['video'] = $error;
-                $this->errors['audio'] = $error;
-            }
+        if ($this->image->uploadedFile === null && $this->video->uploadedFile === null && $this->audio->uploadedFile === null && $this->url === null) {
+            $error = 'Vous devez sélectionner un fichier';
+            $this->errors['image'] = $error;
+            $this->errors['video'] = $error;
+            $this->errors['audio'] = $error;
         }
 
         return empty($this->errors);
+    }
+
+    /**
+     * Get media type options for a select input
+     */
+    public static function getTypeOptions()
+    {
+        return array(
+            'image' => array(
+                'value' => 'image',
+                'label' => 'Image'
+            ),
+            'video' => array(
+                'value' => 'video',
+                'label' => 'Video'
+            ),
+            'audio' => array(
+                'value' => 'audio',
+                'label' => 'Audio'
+            )
+        );
     }
 
     public function getUrl()
