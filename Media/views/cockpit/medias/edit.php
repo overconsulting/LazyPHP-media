@@ -1,6 +1,7 @@
-<h1 class="page-title">{{ pageTitle }}</h1>
-<div class="box box-success">
+<h1 class="page-title">{{ titlePage }}</h1>
+<div class="box box-brown">
     <div class="box-header">
+        <h3 class="box-title">{{ titleBox }}</h3>
         <div class="box-tools pull-right">
             {% button url="cockpit_media_medias" type="default" icon="arrow-left" content="" size="xs" %}
         </div>

@@ -25,7 +25,8 @@ class MediasController extends CockpitController
         $this->render('index', array(
             'medias' => $medias,
             'typeOptions' => $typeOptions,
-            'pageTitle' => 'Medias'
+            'titlePage'         => '<i class="fa fa-picture-o fa-brown"></i> Gestion des médias',
+            'titleBox'          => 'Liste des médias'
         ));
     }
 
@@ -44,7 +45,8 @@ class MediasController extends CockpitController
             'media' => $this->media,
             'typeOptions' => $typeOptions,
             'mediacategoryOptions' => $mediacategoryOptions,
-            'pageTitle' => 'Nouveau media',
+            'titlePage'     => '<i class="fa fa-picture-o fa-brown"></i> Gestion des médias',
+            'titleBox'      => 'Ajouter un Nouveau média',
             'formAction' => Router::url('cockpit_media_medias_create')
         ));
     }
@@ -60,12 +62,13 @@ class MediasController extends CockpitController
         $mediacategoryOptions = MediaCategory::getOptions();
 
         $this->render('edit', array(
-            'id' => $id,
-            'media' => $this->media,
-            'typeOptions' => $typeOptions,
-            'mediacategoryOptions' => $mediacategoryOptions,
-            'pageTitle' => 'Modification media n°'.$id,
-            'formAction' => Router::url('cockpit_media_medias_update_'.$id)
+            'id'                    => $id,
+            'media'                 => $this->media,
+            'typeOptions'           => $typeOptions,
+            'mediacategoryOptions'  => $mediacategoryOptions,
+            'titlePage'             => '<i class="fa fa-picture-o fa-brown"></i> Gestion des médias',
+            'titleBox'              => 'Modification du média n°'.$id,
+            'formAction'            => Router::url('cockpit_media_medias_update_'.$id)
         ));
     }
 

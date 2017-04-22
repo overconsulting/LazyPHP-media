@@ -1,8 +1,7 @@
-<h1 class="page-title"><i class="fa fa-picture-o"></i> {{ pageTitle }}</h1>
-<div class="box box-success">
+<h1 class="page-title">{{ titlePage }}</h1>
+<div class="box box-brown">
     <div class="box-header">
-        <h3 class="box-title">Liste des Medias</h3>
-
+        <h3 class="box-title">{{ titleBox }}</h3>
         <div class="box-tools pull-right">
             {% button url="cockpit_media_medias_new" type="success" icon="plus" content="" class="btn-xs" %}
         </div>
@@ -12,11 +11,11 @@
             <thead>
                 <tr>
                     <th width="1%">ID</th>
-                    <th>Aperçu</th>
-                    <th>Type</th>
-                    <th>Catégorie</th>
+                    <th width="5%">Aperçu</th>
+                    <th width="7%">Type</th>
+                    <th width="10%">Catégorie</th>
                     <th>Nom</th>
-                    <th>URL</th>
+                    <th width="25%">URL</th>
                     <th width="10%">Actions</th>
                 </tr>
             </thead>
@@ -27,7 +26,7 @@ foreach ($params['medias'] as $media) {
     switch ($media->type) {
         case 'image':
             if ($media->image->url != '') {
-                $thumbnail = '<img src="'.$media->image->url.'" width="50" height="50" />';
+                $thumbnail = '<img src="'.$media->image->url.'" width="25" height="25" />';
             }
             break;
 
@@ -50,9 +49,9 @@ foreach ($params['medias'] as $media) {
             '<td>'.$params['typeOptions'][$media->type]['label'].'</td>'.
             '<td>'.$mediaCategory.'</td>'.
             '<td>'.$media->name.'</td>'.
-            '<td>'.$media->url.'</td>'.
+            '<td>'.$media->image->url.'</td>'.
             '<td>';?>
-                {% button url="cockpit_media_medias_edit_<?php echo $media->id ?>" type="primary" size="xs" icon="pencil" content="" %}
+                {% button url="cockpit_media_medias_edit_<?php echo $media->id ?>" type="info" size="xs" icon="pencil" content="" %}
                 {% button url="cockpit_media_medias_delete_<?php echo $media->id ?>" type="danger" size="xs" icon="trash-o" confirmation="Vous confirmer vouloir supprimer ce media?" %}
 <?php
 echo

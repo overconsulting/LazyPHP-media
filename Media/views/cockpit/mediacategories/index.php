@@ -1,7 +1,7 @@
-<h1 class="page-title"><i class="fa fa-picture-o"></i> {{ pageTitle }}</h1>
-<div class="box box-success">
+<h1 class="page-title">{{ titlePage }}</h1>
+<div class="box box-brown">
     <div class="box-header">
-        <h3 class="box-title">Liste des catégories de media</h3>
+        <h3 class="box-title">{{ titleBox }}</h3>
         <div class="box-tools pull-right">
             {% button url="cockpit_media_mediacategories_new" type="success" icon="plus" content="" class="btn-xs" %}
         </div>
@@ -25,7 +25,7 @@ foreach ($params['mediaCategories'] as $mediaCategory) {
             '<td>'.$mediaCategory->code.'</td>'.
             '<td>'.$mediaCategory->label.'</td>'.
             '<td>';?>
-                {% button url="cockpit_media_mediacategories_edit_<?php echo $mediaCategory->id ?>" type="primary" size="xs" icon="pencil" content="" %}
+                {% button url="cockpit_media_mediacategories_edit_<?php echo $mediaCategory->id ?>" type="info" size="xs" icon="pencil" content="" %}
                 {% button url="cockpit_media_mediacategories_delete_<?php echo $mediaCategory->id ?>" type="danger" size="xs" icon="trash-o" confirmation="Vous confirmer vouloir supprimer cette catégorie de media?" %}
 <?php
 echo
