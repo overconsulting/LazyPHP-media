@@ -136,13 +136,17 @@ function selectMediaValid()
 
     selectedMedias = [];
     $selectedMedias.each(function(index, element) {
+        if ($selectedMedias.length == 1) {
+            mediaUrl = $(element).data("mediaUrl");
+        }
         mediaId = parseInt($(element).data("mediaId"));
         selectedMedias.push(mediaId);
     });
 
     s = selectedMedias.join(",");
-    $("#"+mediaInputId).val(s);
-    $("#"+mediaInputDisplayId).val(s);
+    $("#"+mediaInputId).val(s).trigger('change');
+    $("#"+mediaInputId+"_url").val(mediaUrl).trigger('change');
+    $("#"+mediaInputDisplayId).val(s).trigger('change');
 
     return true;
 }
