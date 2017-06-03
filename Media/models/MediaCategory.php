@@ -2,8 +2,8 @@
 
 namespace Media\models;
 
-use System\Model;
-use System\Query;
+use Core\Model;
+use Core\Query;
 
 class MediaCategory extends Model
 {

@@ -2,8 +2,7 @@
 
 namespace Media\models;
 
-use System\Model;
-use System\Query;
+use Core\Model;
 
 class Media extends Model
 {
