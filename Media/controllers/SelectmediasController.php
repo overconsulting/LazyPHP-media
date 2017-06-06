@@ -3,8 +3,8 @@
 namespace Media\controllers;
 
 use app\controllers\FrontController;
-use System\Session;
-use System\Router;
+use Core\Session;
+use Core\Router;
 
 use Media\models\Media;
 use Media\models\MediaCategory;
