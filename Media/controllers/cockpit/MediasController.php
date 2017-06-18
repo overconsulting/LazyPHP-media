@@ -21,8 +21,8 @@ class MediasController extends CockpitController
         $medias = Media::findAll();
 
         $typeOptions = Media::getTypeOptions();
-        
-        $this->render('index', array(
+
+        $this->render('media::medias::index', array(
             'medias' => $medias,
             'typeOptions' => $typeOptions,
             'titlePage'         => '<i class="fa fa-picture-o fa-brown"></i> Gestion des médias',
@@ -39,8 +39,8 @@ class MediasController extends CockpitController
         $typeOptions = Media::getTypeOptions();
 
         $mediacategoryOptions = MediaCategory::getOptions();
-        
-        $this->render('edit', array(
+
+        $this->render('media::medias::edit', array(
             'id' => 0,
             'media' => $this->media,
             'typeOptions' => $typeOptions,
@@ -61,7 +61,7 @@ class MediasController extends CockpitController
 
         $mediacategoryOptions = MediaCategory::getOptions();
 
-        $this->render('edit', array(
+        $this->render('media::medias::edit', array(
             'id'                    => $id,
             'media'                 => $this->media,
             'typeOptions'           => $typeOptions,

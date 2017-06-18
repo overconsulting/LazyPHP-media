@@ -18,8 +18,8 @@ class MediacategoriesController extends CockpitController
     public function indexAction()
     {
         $mediaCategories = MediaCategory::findAll();
-        
-        $this->render('index', array(
+
+        $this->render('media::mediacategories::index', array(
             'mediaCategories'   => $mediaCategories,
             'titlePage'         => '<i class="fa fa-picture-o fa-brown"></i> Gestion des catégories de média',
             'titleBox'          => 'Liste des catégories de media'
@@ -32,7 +32,7 @@ class MediacategoriesController extends CockpitController
             $this->mediaCategory = new MediaCategory();
         }
 
-        $this->render('edit', array(
+        $this->render('media::mediacategories::edit', array(
             'titlePage'     => '<i class="fa fa-picture-o fa-brown"></i> Gestion des catégories de média',
             'titleBox'      => 'Nouvelle catégorie de media',
             'formAction'    => Router::url('cockpit_media_mediacategories_create')
@@ -45,7 +45,7 @@ class MediacategoriesController extends CockpitController
             $this->mediaCategory = MediaCategory::findById($id);
         }
 
-        $this->render('edit', array(
+        $this->render('media::mediacategories::edit', array(
             'mediaCategory' => $this->mediaCategory,
             'titlePage'     => '<i class="fa fa-picture-o fa-brown"></i> Gestion des catégories de média',
             'titleBox'      => 'Modification catégorie de media n°'.$id,
