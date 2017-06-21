@@ -56,7 +56,7 @@ class SelectmediasController extends FrontController
         ksort($mediaGroups);
 
         $this->render(
-            'select',
+            'media::selectmedias::select',
             array(
                 'mediaGroups' => $mediaGroups,
                 'mediaType' => $mediaType,

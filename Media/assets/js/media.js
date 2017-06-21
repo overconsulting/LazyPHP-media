@@ -13,7 +13,7 @@ $(document).ready(function() {
     $("#formMedia input[type=file].media").on("change", mediaTypeChange);
     mediaTypeChange(null);
 
-    $(".input-media-button").on("click", selectMedias);
+    $(".input-media-button").on("click", selectMediasEvent);
 });
 
 function mediaTypeChange(event) {
@@ -24,7 +24,7 @@ function mediaTypeChange(event) {
     }
 }
 
-function selectMedias(event)
+function selectMediasEvent(event)
 {
     var $inputMediaButton = $(event.currentTarget);
 
@@ -43,6 +43,14 @@ function selectMedias(event)
     }
 
     mediaOnValid = $inputMediaButton.data("onValid");
+
+    selectMedias();
+
+    event.preventDefault();
+    return false;
+}
+
+function selectMedias() {
     if (mediaOnValid != null && typeof window[mediaOnValid] === 'function') {
         selectMediaValidFunctions = [selectMediaValid, window[mediaOnValid]];
     } else {
@@ -65,10 +73,8 @@ function selectMedias(event)
         }
     };
 
-    lazyDialogOpen(options);
-
-    event.preventDefault();
-    return false;
+    var lazyDialog = new LazyDialog();
+    lazyDialog.open(options);
 }
 
 function selectMediaLoad()
