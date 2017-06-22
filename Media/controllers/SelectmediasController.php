@@ -84,5 +84,6 @@ class SelectmediasController extends FrontController
         }
 
         echo json_encode($res);
+        exit;
     }
 }
