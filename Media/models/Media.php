@@ -87,7 +87,10 @@ class Media extends Model
             $this->mediacategory_id = null;
         }
 
-        if ($this->image->uploadedFile === null && $this->video->uploadedFile === null && $this->audio->uploadedFile === null && $this->url === null) {
+        if ($this->image->uploadedFile === null && $this->image->url == '' &&
+            $this->video->uploadedFile === null && $this->video->url == '' &&
+            $this->audio->uploadedFile === null && $this->audio->url == '' &&
+            $this->url === null) {
             $error = 'Vous devez sélectionner un fichier';
             $this->errors['image'] = $error;
             $this->errors['video'] = $error;
