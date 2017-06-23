@@ -122,9 +122,14 @@ class Media extends Model
         );
     }
 
-    public function getUrl()
+    public function getUrl($format = '')
     {
-        return $this->{$this->type} != '' ? $this->{$this->type}->url :  '';
+        if ($this->type == 'image') {
+            $url = $this->getImageUrlWithFormat($this->image->url, $format);            
+        } else {
+            $url = $this->{$this->type} != '' ? $this->{$this->type}->url : '';
+        }
+        return $url;
     }
 
     public function getHtml()
@@ -153,15 +158,32 @@ class Media extends Model
 
     public function generateImages()
     {
-        $imageSizes = Config::$config['IMAGES'];
-        foreach ($imageSizes as $size) {
+        $imageFormats = Config::$config['IMAGES'];
+        foreach ($imageFormats as $format => $size) {
             $a = explode('x', $size);
             $w = (int)$a[0];
             $h = (int)$a[1];
-            $img = new \Imagick(PUBLIC_DIR.$this->image->url);
-            /*var_dump($this->image->url,$w,$h);*/
+
+            $this->image->url = '/uploads/media/5/0/50_image.jpg';
+            $path = PUBLIC_DIR.$this->image->url;
+            $img = new \Imagick($path);
+
+            $newPath = $this->getImageUrlWithFormat($path, $format);
+
+            $img->cropThumbnailImage($w, $h);
+            $img->writeImage($newPath);
         }
 
         exit;
+    }
+
+    private function getImageUrlWithFormat($url, $format = '')
+    {
+        $imageFormats = Config::$config['IMAGES'];
+        if ($format != '' && isset($imageFormats[$format])) {
+            $pi = pathinfo($url);
+            return $pi['dirname'].DS.$pi['filename'].'_'.$format.'.'.$pi['extension'];
+        }
+        return $url;
     }
 }
