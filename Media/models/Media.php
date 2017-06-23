@@ -3,6 +3,7 @@
 namespace Media\models;
 
 use Core\Model;
+use Core\Config;
 
 class Media extends Model
 {
@@ -148,5 +149,19 @@ class Media extends Model
         }
 
         return $html;
+    }
+
+    public function generateImages()
+    {
+        $imageSizes = Config::$config['IMAGES'];
+        foreach ($imageSizes as $size) {
+            $a = explode('x', $size);
+            $w = (int)$a[0];
+            $h = (int)$a[1];
+            $img = new \Imagick(PUBLIC_DIR.$this->image->url);
+            /*var_dump($this->image->url,$w,$h);*/
+        }
+
+        exit;
     }
 }

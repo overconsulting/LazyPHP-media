@@ -81,6 +81,7 @@ function selectMediaLoad()
 {
     $("#select_media_dialog .media").on("click", mediaClick);
     $("#formSelectMediasAdd").on("submit", mediaAddClick);
+    uploadInit();    
 }
 
 function mediaClick(event)
@@ -126,7 +127,7 @@ function mediaAddSuccess(data, textStatus, jqXHR)
     if (res.error) {
         alert(res.message);
     } else {
-        $(".input-media-button").click();
+        $(".input-media-button").trigger("click");
     }
 }
 

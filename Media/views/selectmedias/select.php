@@ -78,7 +78,7 @@ if (!$activeSet) {
                 {% form_open id="formSelectMediasAdd" action="formSelectMediasAddAction" class="form-horizontal" %}
                     {% input_hidden name="type" model="mediaType"  %}
                     {% input_hidden name="mediacategory_id" model="mediaCategory.id" %}
-                    {% input_image name="image" label="Choisissez le media à ajouter" class="media media-image" thumbnail="0" %}
+                    {% input_upload name="image" label="Choisissez le media à ajouter" class="media media-image" type="image"  %}
                     {% input_submit id="submitSelectMediasAdd" name="submit" value="save" formId="formSelectMediasAdd" class="btn-primary" icon="plus" label="Ajouter" %}
                 {% form_close %}
             </div>

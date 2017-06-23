@@ -77,6 +77,7 @@ class MediasController extends CockpitController
         $this->media = new Media();
 
         if ($this->media->save($this->request->post)) {
+            $this->media->generateImages();
             Session::addFlash('Media ajouté', 'success');
             $this->redirect('cockpit_media_medias');
         } else {
@@ -91,6 +92,7 @@ class MediasController extends CockpitController
         $this->media = Media::findById($id);
 
         if ($this->media->save($this->request->post)) {
+            $this->media->generateImages();
             Session::addFlash('Media modifié', 'success');
             $this->redirect('cockpit_media_medias');
         } else {
