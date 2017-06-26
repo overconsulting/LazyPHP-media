@@ -5,6 +5,8 @@ namespace Media\controllers;
 use app\controllers\FrontController;
 use Core\Session;
 use Core\Router;
+use Core\Config;
+use Core\Utils;
 
 use Media\models\Media;
 use Media\models\MediaCategory;
@@ -38,10 +40,45 @@ class SelectmediasController extends FrontController
             )
         );
 
+        $imageFormats = Config::$config['IMAGES'];
+
         $active = '';
         $mediaGroups = array();
         foreach ($allMedias as $media) {
             $key = (int)$media->mediacategory_id;
+
+            $url = $media->getUrl();
+            $path = PUBLIC_DIR.$url;
+
+            $mediaInfos = array(
+                'type' => $media->type,
+            );
+
+            if ($media->type == 'image' && file_exists($path)) {
+                $img = new \Imagick($path);
+
+                $mediaInfos['width'] = $img->getImageWidth();
+                $mediaInfos['height'] = $img->getImageHeight();
+                $mediaInfos['size'] = Utils::bytesToHumanReadable($img->getImageLength());
+
+                $mediaInfos['mime'] = $img->getImageMimeType();
+
+                $r = $img->getImageResolution();
+                $mediaInfos['resolution_x'] = $r['x'];
+                $mediaInfos['resolution_y'] = $r['y'];
+
+                $mediaInfos['formats'] = array();
+                foreach ($imageFormats as $format => $size) {
+                    $mediaInfos['formats'][] = array(
+                        'name' => $format,
+                        'size' => $size,
+                        'url' => $media->getUrl($format)
+                    );
+                }
+            }
+
+            $media->infos = $mediaInfos;
+
             if (isset($mediaGroups[$key])) {
                 $mediaGroups[$key]['items'][] = $media;
             } else {

@@ -125,7 +125,7 @@ class Media extends Model
     public function getUrl($format = '')
     {
         if ($this->type == 'image') {
-            $url = $this->getImageUrlWithFormat($this->image->url, $format);            
+            $url = $this->getImageUrlWithFormat($this->image->url, $format);
         } else {
             $url = $this->{$this->type} != '' ? $this->{$this->type}->url : '';
         }
@@ -148,7 +148,7 @@ class Media extends Model
             case 'audio':
                 $html = '<img src="" />';
                 break;
-            
+
             default:
                 break;
         }
@@ -164,7 +164,6 @@ class Media extends Model
             $w = (int)$a[0];
             $h = (int)$a[1];
 
-            $this->image->url = '/uploads/media/5/0/50_image.jpg';
             $path = PUBLIC_DIR.$this->image->url;
             $img = new \Imagick($path);
 
@@ -173,8 +172,6 @@ class Media extends Model
             $img->cropThumbnailImage($w, $h);
             $img->writeImage($newPath);
         }
-
-        exit;
     }
 
     private function getImageUrlWithFormat($url, $format = '')
@@ -182,7 +179,7 @@ class Media extends Model
         $imageFormats = Config::$config['IMAGES'];
         if ($format != '' && isset($imageFormats[$format])) {
             $pi = pathinfo($url);
-            return $pi['dirname'].DS.$pi['filename'].'_'.$format.'.'.$pi['extension'];
+            return $pi['dirname'].'/'.$pi['filename'].'_'.$format.'.'.$pi['extension'];
         }
         return $url;
     }

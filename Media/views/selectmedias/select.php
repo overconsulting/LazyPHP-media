@@ -1,4 +1,6 @@
-<ul class="nav nav-tabs" role="tablist">
+<div class="row">
+    <div class="col-md-9">
+        <ul class="nav nav-tabs" role="tablist">
 <?php
 
 $activeSet = false;
@@ -26,12 +28,12 @@ if (!$activeSet) {
 }
 
 ?>
-    <li role="presentation">
-        <a href="#medias_add"<?php echo $class; ?> role="tab" data-toggle="tab">
-            <i class="fa fa-plus"></i>&nbsp;Nouveau media
-        </a>
-    </li>
-</ul>
+            <li role="presentation">
+                <a href="#medias_add"<?php echo $class; ?> role="tab" data-toggle="tab">
+                    <i class="fa fa-plus"></i>&nbsp;Nouveau media
+                </a>
+            </li>
+        </ul>
 <div class="tab-content">
 <?php
 
@@ -51,8 +53,10 @@ foreach ($params['mediaGroups'] as $key => $mediaGroup) {
     foreach ($mediaGroup['items'] as $media) {
         $url = $media->getUrl();
 
+        $mediaJson = rawurlencode(json_encode($media));
+
         echo
-                '<li class="media" data-media-id="'.$media->id.'" data-media-url="'.$url.'">'.
+                '<li class="media" data-media-id="'.$media->id.'" data-media-url="'.$url.'" data-media="'.$mediaJson.'">'.
                     '<img class="media-image" src="'.$url.'" width="100" height="100" />'.
                     '<div class="media-title">'.htmlspecialchars($media->name).'</div>'.
                 '</li>';
@@ -72,16 +76,24 @@ if (!$activeSet) {
 
 ?>
 
-    <div id="medias_add" class="tab-pane fade<?php echo $active; ?>" role="tabpanel">
-        <div class="row">
-            <div class="col-xs-8 col-xs-offset-2">
-                {% form_open id="formSelectMediasAdd" action="formSelectMediasAddAction" class="form-horizontal" %}
-                    {% input_hidden name="type" model="mediaType"  %}
-                    {% input_hidden name="mediacategory_id" model="mediaCategory.id" %}
-                    {% input_upload name="image" label="Choisissez le media à ajouter" class="media media-image" type="image"  %}
-                    {% input_submit id="submitSelectMediasAdd" name="submit" value="save" formId="formSelectMediasAdd" class="btn-primary" icon="plus" label="Ajouter" %}
-                {% form_close %}
+        <div id="medias_add" class="tab-pane fade<?php echo $active; ?>" role="tabpanel">
+            <div class="row">
+                <div class="col-xs-8 col-xs-offset-2">
+                    {% form_open id="formSelectMediasAdd" action="formSelectMediasAddAction" class="form-horizontal" %}
+                        {% input_hidden name="type" model="mediaType"  %}
+                        {% input_hidden name="mediacategory_id" model="mediaCategory.id" %}
+                        {% input_upload name="image" label="Choisissez le media à ajouter" class="media media-image" type="image"  %}
+                        {% input_submit id="submitSelectMediasAdd" name="submit" value="save" formId="formSelectMediasAdd" class="btn-primary" icon="plus" label="Ajouter" %}
+                        {% form_close %}
+                    </div>
+                </div>
             </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <h3>Propiétés</h3>
+        <div id="media_properties">
+
         </div>
     </div>
 </div>

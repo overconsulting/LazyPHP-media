@@ -27,3 +27,16 @@
 #select_media_dialog .tab-pane {
 	padding-top: 20px;
 }
+
+#media_properties .media-properties td {
+	font-weight: normal;
+	padding: 5px;
+	text-align: left;
+	text-decoration: italic;
+	vertical-align: top;
+}
+
+#media_properties .media-properties td:first-child {
+	font-weight: bold;
+	text-align: right;
+}

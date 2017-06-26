@@ -109,4 +109,14 @@ class MediasController extends CockpitController
         Session::addFlash('Media supprimé', 'success');
         $this->redirect('cockpit_media_medias');
     }
+
+    public function generateimagesAction()
+    {
+        $medias = Media::findAll();
+        foreach ($medias as $media) {
+            $media->generateImages();
+        }
+        Session::addFlash('Images regénérées', 'success');
+        $this->redirect('cockpit_media_medias');
+    }
 }

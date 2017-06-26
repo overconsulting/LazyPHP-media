@@ -81,7 +81,7 @@ function selectMediaLoad()
 {
     $("#select_media_dialog .media").on("click", mediaClick);
     $("#formSelectMediasAdd").on("submit", mediaAddClick);
-    uploadInit();    
+    uploadInit();
 }
 
 function mediaClick(event)
@@ -98,6 +98,41 @@ function mediaClick(event)
         $(".media").removeClass("selected");
         $media.addClass("selected");
     }
+
+    var media = JSON.parse(decodeURIComponent($media.data("media")));
+    var mediaProperties = $("#media_properties")[0];
+    var html =
+        '<table class="media-properties">'+
+            '<tr>'+
+                '<td>Type :</td>'+
+                '<td>'+media.type+', '+media.infos.mime+'</td>'+
+            '</tr>'+
+            '<tr>'+
+                '<td>Dimensions image d\'origine (L x l) :</td>'+
+                '<td>'+media.infos.width+' x '+media.infos.height+'</td>'+
+            '</tr>'+
+            '<tr>'+
+                '<td>Résolution (pixels / cm) :</td>'+
+                '<td>'+media.infos.resolution_x+' x '+media.infos.resolution_y+'</td>'+
+            '</tr>'+
+            '<tr>'+
+                '<td>Taille :</td>'+
+                '<td>'+media.infos.size+'</td>'+
+            '</tr>'+
+            '<tr>'+
+                '<td>Formats possibles :</td>'+
+                '<td>';
+    if (media.infos.formats.length > 0) {
+        media.infos.formats.forEach (function(format) {
+            html = html + format.name + ' => ' + format.size + '<br />';
+        })
+    }
+    html = html +
+                '</td>'+
+            '</tr>'+
+        '</table>';
+
+    mediaProperties.innerHTML = html;
 }
 
 function mediaAddClick(event)
