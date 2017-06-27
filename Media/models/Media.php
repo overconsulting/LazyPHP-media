@@ -3,7 +3,8 @@
 namespace Media\models;
 
 use Core\Model;
-use Core\Config;
+
+use Media\models\MediaFormat;
 
 class Media extends Model
 {
@@ -158,28 +159,24 @@ class Media extends Model
 
     public function generateImages()
     {
-        $imageFormats = Config::$config['IMAGES'];
-        foreach ($imageFormats as $format => $size) {
-            $a = explode('x', $size);
-            $w = (int)$a[0];
-            $h = (int)$a[1];
-
+        $mediaFormats = MediaFormat::findAll();
+        foreach ($mediaFormats as $format) {
             $path = PUBLIC_DIR.$this->image->url;
             $img = new \Imagick($path);
 
-            $newPath = $this->getImageUrlWithFormat($path, $format);
+            $newPath = $this->getImageUrlWithFormat($path, $format->code);
 
-            $img->cropThumbnailImage($w, $h);
+            $img->cropThumbnailImage($format->width, $format->height);
             $img->writeImage($newPath);
         }
     }
 
     private function getImageUrlWithFormat($url, $format = '')
     {
-        $imageFormats = Config::$config['IMAGES'];
-        if ($format != '' && isset($imageFormats[$format])) {
+        $mediaFormat = $format != '' ? MediaFormat::findByCode($format) : null;
+        if ($mediaFormat != null) {
             $pi = pathinfo($url);
-            return $pi['dirname'].'/'.$pi['filename'].'_'.$format.'.'.$pi['extension'];
+            return $pi['dirname'].'/'.$pi['filename'].'_'.$mediaFormat->code.'.'.$pi['extension'];
         }
         return $url;
     }

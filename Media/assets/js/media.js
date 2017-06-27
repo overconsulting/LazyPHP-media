@@ -108,7 +108,7 @@ function mediaClick(event)
                 '<td>'+media.type+', '+media.infos.mime+'</td>'+
             '</tr>'+
             '<tr>'+
-                '<td>Dimensions image d\'origine (L x l) :</td>'+
+                '<td>Dimensions image d\'origine (l x h) :</td>'+
                 '<td>'+media.infos.width+' x '+media.infos.height+'</td>'+
             '</tr>'+
             '<tr>'+
@@ -118,17 +118,6 @@ function mediaClick(event)
             '<tr>'+
                 '<td>Taille :</td>'+
                 '<td>'+media.infos.size+'</td>'+
-            '</tr>'+
-            '<tr>'+
-                '<td>Formats possibles :</td>'+
-                '<td>';
-    if (media.infos.formats.length > 0) {
-        media.infos.formats.forEach (function(format) {
-            html = html + format.name + ' => ' + format.size + '<br />';
-        })
-    }
-    html = html +
-                '</td>'+
             '</tr>'+
         '</table>';
 
@@ -176,19 +165,28 @@ function selectMediaValid()
     var $selectedMedias = $("#select_media_dialog .media.selected");
     var s = "";
 
+    var mediaFormat = $("input[name=media_format]:checked").val();
+
     selectedMedias = [];
     $selectedMedias.each(function(index, element) {
         if ($selectedMedias.length == 1) {
-            mediaUrl = $(element).data("mediaUrl");
+            if (mediaFormat == "") {
+                mediaUrl = $(element).data("mediaUrl");                
+            } else {
+                var media = JSON.parse(decodeURIComponent($(element).data("media")));
+                mediaUrl = media.infos.formats_urls[mediaFormat];
+            }
         }
         mediaId = parseInt($(element).data("mediaId"));
         selectedMedias.push(mediaId);
     });
-
+console.log(mediaInputId);
     s = selectedMedias.join(",");
     $("#"+mediaInputId).val(s).trigger('change');
-    $("#"+mediaInputId+"_url").val(mediaUrl).trigger('change');
-    $("#"+mediaInputDisplayId).val(s).trigger('change');
+    $("#"+mediaInputId+"_url").val(mediaUrl);
+    $("#"+mediaInputId+"_format").val(mediaFormat);
+    $("#"+mediaInputDisplayId).val(s);
+    console.log(mediaInputDisplayId);
 
     return true;
 }

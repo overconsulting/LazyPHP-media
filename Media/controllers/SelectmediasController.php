@@ -5,11 +5,11 @@ namespace Media\controllers;
 use app\controllers\FrontController;
 use Core\Session;
 use Core\Router;
-use Core\Config;
 use Core\Utils;
 
 use Media\models\Media;
 use Media\models\MediaCategory;
+use Media\models\MediaFormat;
 
 class SelectmediasController extends FrontController
 {
@@ -28,10 +28,8 @@ class SelectmediasController extends FrontController
             $where[] = 'mediacategory_id = '.$mediaCategory->id;
         }
 
-        if (!empty($where)) {
-            $where = implode(' and ', $where);
-        }
-
+        $where = !empty($where) ? implode(' and ', $where) : '';
+ 
         $allMedias = Media::findAll(
             $where,
             array(
@@ -40,7 +38,7 @@ class SelectmediasController extends FrontController
             )
         );
 
-        $imageFormats = Config::$config['IMAGES'];
+        $mediaFormats = MediaFormat::findAll();
 
         $active = '';
         $mediaGroups = array();
@@ -67,13 +65,8 @@ class SelectmediasController extends FrontController
                 $mediaInfos['resolution_x'] = $r['x'];
                 $mediaInfos['resolution_y'] = $r['y'];
 
-                $mediaInfos['formats'] = array();
-                foreach ($imageFormats as $format => $size) {
-                    $mediaInfos['formats'][] = array(
-                        'name' => $format,
-                        'size' => $size,
-                        'url' => $media->getUrl($format)
-                    );
+                foreach ($mediaFormats as $format) {
+                    $mediaInfos['formats_urls'][$format->code] = $media->getUrl($format->code);
                 }
             }
 
@@ -92,12 +85,16 @@ class SelectmediasController extends FrontController
         }
         ksort($mediaGroups);
 
+        $mediaFormatOptions = MediaFormat::getOptions();
+
         $this->render(
             'media::selectmedias::select',
             array(
                 'mediaGroups' => $mediaGroups,
                 'mediaType' => $mediaType,
                 'mediaCategory' => $mediaCategory,
+                'mediaFormats' => $mediaFormats,
+                'mediaFormatOptions' => $mediaFormatOptions,
                 'formSelectMediasAddAction' => '/media/selectmedias/add'
             ),
             false
