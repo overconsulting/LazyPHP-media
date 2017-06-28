@@ -47,7 +47,7 @@ foreach ($params['mediaGroups'] as $key => $mediaGroup) {
     }
 
     echo
-            '<div id="medias_'.$mediaGroup['code'].'" class="tab-pane fade'.$active.'" role="tabpanel">'.
+            '<div id="medias_'.$mediaGroup['code'].'" class="tab-pane'.$active.'" role="tabpanel">'.
                 '<ul class="medias">';
 
     foreach ($mediaGroup['items'] as $media) {
@@ -75,16 +75,16 @@ if (!$activeSet) {
 }
 
 ?>
-        </div>
-        <div id="medias_add" class="tab-pane fade<?php echo $active; ?>" role="tabpanel">
-            <div class="row">
-                <div class="col-xs-8 col-xs-offset-2">
-                    {% form_open id="formSelectMediasAdd" action="formSelectMediasAddAction" class="form-horizontal" %}
-                        {% input_hidden name="type" model="mediaType"  %}
-                        {% input_hidden name="mediacategory_id" model="mediaCategory.id" %}
-                        {% input_upload name="image" label="Choisissez le media à ajouter" class="media media-image" type="image"  %}
-                        {% input_submit id="submitSelectMediasAdd" name="submit" value="save" formId="formSelectMediasAdd" class="btn-primary" icon="plus" label="Ajouter" %}
-                    {% form_close %}
+            <div id="medias_add" class="tab-pane<?php echo $active; ?>" role="tabpanel">
+                <div class="row">
+                    <div class="col-xs-8 col-xs-offset-2">
+                        {% form_open id="formSelectMediasAdd" action="formSelectMediasAddAction" class="form-horizontal" %}
+                            {% input_hidden name="type" model="mediaType"  %}
+                            {% input_hidden name="mediacategory_id" model="mediaCategory.id" %}
+                            {% input_upload name="image" label="Choisissez le media à ajouter" class="media media-image" type="image"  %}
+                            {% input_submit id="submitSelectMediasAdd" name="submit" value="save" formId="formSelectMediasAdd" class="btn-primary" icon="plus" label="Ajouter" %}
+                        {% form_close %}
+                    </div>
                 </div>
             </div>
         </div>
@@ -95,7 +95,7 @@ if (!$activeSet) {
                 Sélectionnez un format
             </div>
             <div class="panel-body">
-                {% form_open id="formSelectMedia" class="form" %}
+                {% form_open id="formSelectMediasFormat" class=""%}
                     {% input_radiogroup name="media_format" options="mediaFormatOptions" %}
                 {% form_close %}
             </div>

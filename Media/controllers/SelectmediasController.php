@@ -112,6 +112,7 @@ class SelectmediasController extends FrontController
         $media->name = date('YmdHis');
 
         if ($media->save($this->request->post)) {
+            $media->generateImages();
         } else {
             $res['error'] = true;
             $res['message'] = $media->errors['image'];

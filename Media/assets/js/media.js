@@ -1,94 +1,98 @@
-var mediaInputId = null;
-var mediaInputDisplayId = null;
-var mediaSelectMultiple = "0";
-var mediaType = "";
-var mediaCategory = "";
-var mediaOnValid = null;
-var selectedMedias = [];
+var SelectMediasDialog = function() {
+    this.dialog = null;
+    this.selectedMedias = [];
+    this.inputId = null;
+    this.inputDisplayId = null;
+    this.multiple = false;
+    this.mediaType = "";
+    this.mediaCategory = "";
+    this.validEvent = null;
+};
 
-$(document).ready(function() {
-    $("#formMedia select[name=type]").on("change", mediaTypeChange);
-    mediaTypeChange(null);
+SelectMediasDialog.prototype.selectMedias = function(params) {
+    this.dialog = null;
+    this.selectedMedias = [];
 
-    $("#formMedia input[type=file].media").on("change", mediaTypeChange);
-    mediaTypeChange(null);
+    this.inputId = params.inputId != null ? params.inputId : null;
+    this.inputDisplayId = params.inputDisplayId != null ? params.inputDisplayId : null;
+    this.multiple = params.multiple != null ? params.multiple : false;
+    this.mediaType = params.mediaType != null ? params.mediaType : "";
+    this.mediaCategory = params.mediaCategory != null ? params.mediaCategory : "";
 
-    $(".input-media-button").on("click", selectMediasEvent);
-});
-
-function mediaTypeChange(event) {
-    var type = $("select[name=type]")[0];
-    if (type != null) {
-        $("#formMedia input[type=file].media").parents(".form-group").hide();
-        $("#formMedia input[type=file].media.media-"+type.options[type.selectedIndex].value).parents(".form-group").show();
-    }
-}
-
-function selectMediasEvent(event)
-{
-    var $inputMediaButton = $(event.currentTarget);
-
-    mediaInputId = $inputMediaButton.data("inputId");
-    mediaInputDisplayId = $inputMediaButton.data("inputDisplayId");
-    mediaSelectMultiple = $inputMediaButton.data("selectMultiple");
-
-    mediaType = $inputMediaButton.data("mediaType");
-    if (mediaType == null) {
-        mediaType = "";
-    }
-
-    mediaCategory = $inputMediaButton.data("mediaCategory");
-    if (mediaCategory == null) {
-        mediaCategory = "";
-    }
-
-    mediaOnValid = $inputMediaButton.data("onValid");
-
-    selectMedias();
-
-    event.preventDefault();
-    return false;
-}
-
-function selectMedias() {
-    if (mediaOnValid != null && typeof window[mediaOnValid] === 'function') {
-        selectMediaValidFunctions = [selectMediaValid, window[mediaOnValid]];
+    var selectMediasValidEventFunctions = [];
+    if (params.validEvent != null && typeof window[params.validEvent] === 'function') {
+        this.validEvent = window[params.validEvent];
+        selectMediasValidEventFunctions = [this.selectMediasValidEvent.bind(this), this.validEvent.bind(this)];
     } else {
-        selectMediaValidFunctions = [selectMediaValid];
+        this.validEvent = null;
+        selectMediasValidEventFunctions = [this.selectMediasValidEvent.bind(this)];
     }
 
     var postData = new FormData();
-    postData.append("mediaType", mediaType);
-    postData.append("mediaCategory", mediaCategory);
+    postData.append("mediaType", this.mediaType);
+    postData.append("mediaCategory", this.mediaCategory);
 
-    options = {
+    params = {
         postData: postData,
-        id: "select_media_dialog",
+        id: "select_medias_dialog",
         title: "Medias",
         url: "/media/selectmedias/select",
         actions: {
-            load: selectMediaLoad,
+            load: this.selectMediasLoadEvent.bind(this),
 //          "cancel": null,
-            valid: selectMediaValidFunctions
+            valid: selectMediasValidEventFunctions
         }
     };
 
-    var lazyDialog = new LazyDialog();
-    lazyDialog.open(options);
+    this.lazyDialog = new LazyDialog();
+    this.lazyDialog.open(params);
 }
 
-function selectMediaLoad()
-{
-    $("#select_media_dialog .media").on("click", mediaClick);
-    $("#formSelectMediasAdd").on("submit", mediaAddClick);
+SelectMediasDialog.prototype.selectMediasLoadEvent = function() {
+    $("#select_medias_dialog .media").on("click", this.mediaClickEvent.bind(this));
+    $("#formSelectMediasAdd").on("submit", this.mediaAddClickEvent.bind(this));
+    $($("#select_medias_dialog a[role=tab]")[0]).tab('show');
     uploadInit();
 }
 
-function mediaClick(event)
-{
+SelectMediasDialog.prototype.selectMediasValidEvent = function() {
+    var $selectedMedias = $("#select_medias_dialog .media.selected");
+    if ($selectedMedias.length == 0) {
+        alert("Vous devez sélectionner au moins un media.");
+    } else {
+        var s = "";
+
+        var mediaFormat = $("input[name=media_format]:checked").val();
+        var mediaUrl = "";
+
+        this.selectedMedias = [];
+        $selectedMedias.each(function(index, element) {
+            if ($selectedMedias.length == 1) {
+                if (mediaFormat == "") {
+                    mediaUrl = $(element).data("mediaUrl");                
+                } else {
+                    var media = JSON.parse(decodeURIComponent($(element).data("media")));
+                    mediaUrl = media.infos.formats_urls[mediaFormat];
+                }
+            }
+            mediaId = parseInt($(element).data("mediaId"));
+            this.selectedMedias.push(mediaId);
+        }.bind(this));
+
+        s = this.selectedMedias.join(",");
+        $("#" + this.inputId).val(s).trigger('change');
+        $("#" + this.inputId + "_url").val(mediaUrl);
+        $("#" + this.inputId + "_format").val(mediaFormat);
+        $("#" + this.inputDisplayId).val("[" + s + "]" + (mediaUrl != "" ? " " + mediaUrl : ""));
+
+        return true;
+    }
+}
+
+SelectMediasDialog.prototype.mediaClickEvent = function(event) {
     var $media = $(event.currentTarget);
 
-    if (mediaSelectMultiple == "1") {
+    if (this.multiple) {
         if ($media.hasClass("selected")) {
             $media.removeClass("selected");
         } else {
@@ -124,8 +128,7 @@ function mediaClick(event)
     mediaProperties.innerHTML = html;
 }
 
-function mediaAddClick(event)
-{
+SelectMediasDialog.prototype.mediaAddClickEvent = function(event) {
     var formAdd = document.getElementById("formSelectMediasAdd");
 
     var postData = new FormData(formAdd);
@@ -137,16 +140,16 @@ function mediaAddClick(event)
         processData: false,
         contentType: false,
         dataType: 'text',
-        success: mediaAddSuccess,
-        error: mediaAddError
+        context: this,
+        success: this.mediaAddSuccessEvent,
+        error: this.mediaAddErrorEvent
     });
 
     event.preventDefault();
     return false;
 }
 
-function mediaAddSuccess(data, textStatus, jqXHR)
-{
+SelectMediasDialog.prototype.mediaAddSuccessEvent = function(data, textStatus, jqXHR) {
     res = JSON.parse(data);
     if (res.error) {
         alert(res.message);
@@ -155,38 +158,61 @@ function mediaAddSuccess(data, textStatus, jqXHR)
     }
 }
 
-function mediaAddError(jqXHR, textStatus, errorThrown)
-{
+SelectMediasDialog.prototype.mediaAddErrorEvent = function(jqXHR, textStatus, errorThrown) {
     console.log(textStatus, errorThrown);
 }
 
-function selectMediaValid()
-{
-    var $selectedMedias = $("#select_media_dialog .media.selected");
-    var s = "";
-
-    var mediaFormat = $("input[name=media_format]:checked").val();
-
-    selectedMedias = [];
-    $selectedMedias.each(function(index, element) {
-        if ($selectedMedias.length == 1) {
-            if (mediaFormat == "") {
-                mediaUrl = $(element).data("mediaUrl");                
-            } else {
-                var media = JSON.parse(decodeURIComponent($(element).data("media")));
-                mediaUrl = media.infos.formats_urls[mediaFormat];
-            }
-        }
-        mediaId = parseInt($(element).data("mediaId"));
-        selectedMedias.push(mediaId);
-    });
-console.log(mediaInputId);
-    s = selectedMedias.join(",");
-    $("#"+mediaInputId).val(s).trigger('change');
-    $("#"+mediaInputId+"_url").val(mediaUrl);
-    $("#"+mediaInputId+"_format").val(mediaFormat);
-    $("#"+mediaInputDisplayId).val(s);
-    console.log(mediaInputDisplayId);
-
-    return true;
+function formMediaTypeChange(event) {
+    var type = $("select[name=type]")[0];
+    if (type != null) {
+        $("#formMedia input[type=file].media").parents(".form-group").hide();
+        $("#formMedia input[type=file].media.media-"+type.options[type.selectedIndex].value).parents(".form-group").show();
+    }
 }
+
+function selectMedias(event) {
+    var $inputMediaButton = $(event.currentTarget);
+
+    var inputId = $inputMediaButton.data("inputId");
+    var inputDisplayId = $inputMediaButton.data("inputDisplayId");
+
+    var multiple = $inputMediaButton.data("multiple");
+    multiple =  multiple != null && multiple == "1";
+
+    var mediaType = $inputMediaButton.data("mediaType");
+    if (mediaType == null) {
+        mediaType = "";
+    }
+
+    var mediaCategory = $inputMediaButton.data("mediaCategory");
+    if (mediaCategory == null) {
+        mediaCategory = "";
+    }
+
+    var validEvent = $inputMediaButton.data("onValid");
+
+    params = {
+        inputId: inputId,
+        inputDisplayId: inputDisplayId,
+        multiple: multiple,
+        mediaType: mediaType,
+        mediaCategory: mediaCategory,
+        validEvent: validEvent
+    };
+
+    var selectMediasDialog = new SelectMediasDialog();
+    selectMediasDialog.selectMedias(params);
+
+    event.preventDefault();
+    return false;
+}
+
+$(document).ready(function() {
+    $("#formMedia select[name=type]").on("change", formMediaTypeChange);
+    formMediaTypeChange(null);
+
+    // $("#formMedia input[type=file].media").on("change", formMediaTypeChange);
+    // mediaTypeChange(null);
+
+    $(".input-media-button").on("click", selectMedias);
+});

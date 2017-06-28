@@ -1,10 +1,10 @@
-#select_media_dialog .medias {
+#select_medias_dialog .medias {
 	margin: 0;
 	padding: 0;
 	text-align: center;
 }
 
-#select_media_dialog .medias .media {
+#select_medias_dialog .medias .media {
 	border: solid 3px #fff;
 	display: inline-block;
 	margin-right: 20px;
@@ -14,17 +14,17 @@
 	position: relative;
 }
 
-#select_media_dialog .medias .media:hover {
+#select_medias_dialog .medias .media:hover {
 	border: solid 3px blue;
 	cursor: pointer;
 }
 
-#select_media_dialog .medias .media.selected {
+#select_medias_dialog .medias .media.selected {
 	border: solid 3px red;
 	cursor: pointer;
 }
 
-#select_media_dialog .tab-pane {
+#select_medias_dialog .tab-pane {
 	padding-top: 20px;
 }
 
@@ -39,4 +39,17 @@
 #media_properties .media-properties td:first-child {
 	font-weight: bold;
 	text-align: right;
+}
+
+#formSelectMediasFormat .radio-inline {
+	display: block;
+	margin-bottom: 5px;
+}
+
+#formSelectMediasFormat .radio-inline + .radio-inline {
+	margin-left: 0;
+}
+
+#formSelectMediasFormat .radio-inline input[type=radio] {
+	margin-top: 0px;
 }
