@@ -86,7 +86,7 @@ class MediacategoriesController extends CockpitController
     {
         $mediaCategory = MediaCategory::findById($id);
         $mediaCategory->delete();
-        Session::addFlash('Catégorie de media supprimé', 'success');
+        Session::addFlash('Catégorie de media supprimée', 'success');
         $this->redirect('cockpit_media_mediacategories');
     }
 }

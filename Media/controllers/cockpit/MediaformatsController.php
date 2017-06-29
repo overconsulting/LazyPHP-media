@@ -11,7 +11,7 @@ use Media\models\MediaFormat;
 class MediaformatsController extends CockpitController
 {
     /*
-     * @var Media\models\MediaCategory
+     * @var Media\models\MediaFormat
      */
     public $mediaFormat = null;
 
@@ -73,7 +73,7 @@ class MediaformatsController extends CockpitController
         $this->mediaFormat = MediaFormat::findById($id);
 
         if ($this->mediaFormat->save($this->request->post)) {
-            Session::addFlash('Catégorie de media modifié', 'success');
+            Session::addFlash('Format de media modifié', 'success');
             $this->redirect('cockpit_media_mediaformats');
         } else {
             Session::addFlash('Erreur(s) dans le formulaire', 'danger');
@@ -86,7 +86,7 @@ class MediaformatsController extends CockpitController
     {
         $mediaFormat = MediaFormat::findById($id);
         $mediaFormat->delete();
-        Session::addFlash('Catégorie de media supprimé', 'success');
+        Session::addFlash('Format de media supprimé', 'success');
         $this->redirect('cockpit_media_mediaformats');
     }
 }
