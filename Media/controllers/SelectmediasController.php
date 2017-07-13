@@ -29,7 +29,7 @@ class SelectmediasController extends FrontController
         }
 
         $where = !empty($where) ? implode(' and ', $where) : '';
- 
+
         $allMedias = Media::findAll(
             $where,
             array(
@@ -75,8 +75,13 @@ class SelectmediasController extends FrontController
             if (isset($mediaGroups[$key])) {
                 $mediaGroups[$key]['items'][] = $media;
             } else {
-                $mediaGroups[$key]['code'] = $key != 0 ? $media->mediacategory->code : 'medias';
-                $mediaGroups[$key]['label'] = $key != 0 ? strtolower($media->mediacategory->label) : 'commun';
+                if(!isset($media->mediacategory)) {
+                  $mediaGroups[$key]['code'] = 'medias';
+                  $mediaGroups[$key]['label'] = 'commun';
+                } else {
+                    $mediaGroups[$key]['code'] = $key != 0 ? $media->mediacategory->code : 'medias';
+                    $mediaGroups[$key]['label'] = $key != 0 ? strtolower($media->mediacategory->label) : 'commun';
+                }
                 $mediaGroups[$key]['items'] = array($media);
                 if ($active == '') {
                     $mediaGroups[$key]['active'] = true;

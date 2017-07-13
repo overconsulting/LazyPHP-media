@@ -3,8 +3,8 @@
     <div class="box-header">
         <h3 class="box-title">{{ titleBox }}</h3>
         <div class="box-tools pull-right">
-            {% button url="cockpit_media_medias_new" type="success" icon="plus" content="" class="btn-xs" hint="Nouveau media" %}
-            {% button url="cockpit_media_medias_generateimages" type="primary" icon="refresh" content="" class="btn-xs" hint="Regénérer toutes les images" onclick="showHourglass();" %}
+            {% button url="cockpit_media_medias_new" type="success" icon="plus" content="" class="btn-sm" hint="Nouveau media" %}
+            {% button url="cockpit_media_medias_generateimages" type="primary" icon="refresh" content="" class="btn-sm" hint="Regénérer toutes les images" onclick="showHourglass();" %}
         </div>
     </div>
     <div class="box-body">
