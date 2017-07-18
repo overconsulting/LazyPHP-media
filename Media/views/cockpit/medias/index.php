@@ -52,8 +52,8 @@ foreach ($params['medias'] as $media) {
             '<td>'.$media->name.'</td>'.
             '<td>'.$media->image->url.'</td>'.
             '<td>';?>
-                {% button url="cockpit_media_medias_edit_<?php echo $media->id ?>" type="info" size="xs" icon="pencil" content="" %}
-                {% button url="cockpit_media_medias_delete_<?php echo $media->id ?>" type="danger" size="xs" icon="trash-o" confirmation="Vous confirmer vouloir supprimer ce media?" %}
+                {% button url="cockpit_media_medias_edit_<?php echo $media->id ?>" type="info" size="sm" icon="pencil" content="" %}
+                {% button url="cockpit_media_medias_delete_<?php echo $media->id ?>" type="danger" size="sm" icon="trash-o" confirmation="Vous confirmer vouloir supprimer ce media?" %}
 <?php
 echo
         '</td>'.

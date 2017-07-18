@@ -3,11 +3,11 @@
     <div class="box-header">
         <h3 class="box-title">{{ boxTitle }}</h3>
         <div class="box-tools pull-right">
-            {% button url="cockpit_media_mediaformats" type="default" icon="arrow-left" content="" size="xs" %}
+            {% button url="cockpit_media_mediaformats" type="secondary" icon="arrow-left" content="" size="sm" %}
         </div>
     </div>
     <div class="box-body">
-        {% form_open id="formMediaFormat" action="formAction" class="form-horizontal" %}
+        {% form_open id="formMediaFormat" action="formAction" %}
             {% input_text name="code" model="mediaFormat.code" label="Code" %}
             {% input_text name="label" model="mediaFormat.label" label="Nom" %}
             {% input_text name="width" model="mediaFormat.width" label="Largeur" %}

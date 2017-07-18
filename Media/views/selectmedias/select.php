@@ -78,7 +78,7 @@ if (!$activeSet) {
             <div id="medias_add" class="tab-pane<?php echo $active; ?>" role="tabpanel">
                 <div class="row">
                     <div class="col-xs-8 col-xs-offset-2">
-                        {% form_open id="formSelectMediasAdd" action="formSelectMediasAddAction" class="form-horizontal" %}
+                        {% form_open id="formSelectMediasAdd" action="formSelectMediasAddAction" %}
                             {% input_hidden name="type" model="mediaType"  %}
                             {% input_hidden name="mediacategory_id" model="mediaCategory.id" %}
                             {% input_upload name="image" label="Choisissez le media à ajouter" class="media media-image" type="image"  %}
