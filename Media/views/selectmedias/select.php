@@ -6,30 +6,30 @@
 $activeSet = false;
 foreach ($params['mediaGroups'] as $key => $mediaGroup) {
     if (!$activeSet) {
-        $class =  ' class="active"';
+        $classActive = ' active';
         $activeSet = true;
     } else {
-        $class = '';
+        $classActive = '';
     }
 
     echo
-        '<li role="presentation">'.
-            '<a href="#medias_'.$mediaGroup['code'].'"'.$class.' role="tab" data-toggle="tab">'.
+        '<li class="nav-item">'.
+            '<a href="#medias_'.$mediaGroup['code'].'" class="nav-link '.$classActive.'" role="tab" data-toggle="tab">'.
                 'Medias '.$mediaGroup['label'].'
             </a>'.
         '</li>';
 }
 
 if (!$activeSet) {
-    $class =  ' class="active"';
+    $classActive = ' active';
     $activeSet = true;
 } else {
-    $class = '';
+    $classActive = '';
 }
 
 ?>
-            <li role="presentation">
-                <a href="#medias_add"<?php echo $class; ?> role="tab" data-toggle="tab">
+            <li class="nav-item">
+                <a href="#medias_add" class="nav-link<?php echo $classActive; ?>" role="tab" data-toggle="tab">
                     <i class="fa fa-plus"></i>&nbsp;Nouveau media
                 </a>
             </li>
@@ -40,14 +40,14 @@ if (!$activeSet) {
 $activeSet = false;
 foreach ($params['mediaGroups'] as $key => $mediaGroup) {
     if (!$activeSet) {
-        $active =  ' in active';
+        $classActive =  ' active';
         $activeSet = true;
     } else {
-        $active = '';
+        $classActive = '';
     }
 
     echo
-            '<div id="medias_'.$mediaGroup['code'].'" class="tab-pane'.$active.'" role="tabpanel">'.
+            '<div id="medias_'.$mediaGroup['code'].'" class="tab-pane'.$classActive.'" role="tabpanel">'.
                 '<ul class="medias">';
 
     foreach ($mediaGroup['items'] as $media) {
@@ -57,7 +57,7 @@ foreach ($params['mediaGroups'] as $key => $mediaGroup) {
 
         echo
                     '<li class="media" data-media-id="'.$media->id.'" data-media-url="'.$url.'" data-media="'.$mediaJson.'">'.
-                        '<img class="media-image" src="'.$url.'" width="100" height="100" />'.
+                        '<img class="media-image img-responsive" src="'.$url.'" />'.
                         '<div class="media-title">'.htmlspecialchars($media->name).'</div>'.
                     '</li>';
     }
@@ -68,15 +68,15 @@ foreach ($params['mediaGroups'] as $key => $mediaGroup) {
 }
 
 if (!$activeSet) {
-    $active = ' in active';
+    $classActive = ' active';
     $activeSet = true;
 } else {
-    $active = '';
+    $classActive = '';
 }
 
 ?>
-            <div id="medias_add" class="tab-pane<?php echo $active; ?>" role="tabpanel">
-                <div class="row">
+            <div id="medias_add" class="tab-pane<?php echo $classActive; ?>" role="tabpanel">
+                <div>
                     <div class="col-xs-8 col-xs-offset-2">
                         {% form_open id="formSelectMediasAdd" action="formSelectMediasAddAction" %}
                             {% input_hidden name="type" model="mediaType"  %}
@@ -90,21 +90,21 @@ if (!$activeSet) {
         </div>
     </div>
     <div class="col-md-3">
-        <div class="panel panel-default">
-            <div class="panel-heading">
+        <div class="card card-secondary">
+            <div class="card-header">
                 Sélectionnez un format
             </div>
-            <div class="panel-body">
+            <div class="card-block">
                 {% form_open id="formSelectMediasFormat" class=""%}
                     {% input_radiogroup name="media_format" options="mediaFormatOptions" %}
                 {% form_close %}
             </div>
         </div>
-        <div class="panel panel-default">
-            <div class="panel-heading">
+        <div class="card card-secondary">
+            <div class="card-header">
                 Propriétés du media
             </div>
-            <div id="media_properties" class="panel-body">
+            <div id="media_properties" class="card-block">
             </div>
         </div>
     </div>

@@ -8,6 +8,7 @@ use Core\Query;
 class MediaCategory extends Model
 {
     protected $permittedColumns = array(
+        'site_id',
         'code',
         'label'
     );
@@ -15,6 +16,22 @@ class MediaCategory extends Model
     public static function getTableName()
     {
         return 'mediacategories';
+    }
+
+    /**
+     * Get list of associed table(s)
+     *
+     * @return mixed
+     */
+    public function getAssociations()
+    {
+        return array(
+            'site' => array(
+                'type' => '1',
+                'model' => 'MultiSite\\models\\Site',
+                'key' => 'site_id',
+            )
+        );
     }
 
     public function getValidations()

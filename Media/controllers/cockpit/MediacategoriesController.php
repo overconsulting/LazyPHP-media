@@ -7,6 +7,7 @@ use Core\Session;
 use Core\Router;
 
 use Media\models\MediaCategory;
+use MultiSite\models\Site;
 
 class MediacategoriesController extends CockpitController
 {
@@ -17,7 +18,12 @@ class MediacategoriesController extends CockpitController
 
     public function indexAction()
     {
-        $mediaCategories = MediaCategory::findAll();
+        if ($this->site !== null) {
+            $where = 'site_id = '.$this->site->id;
+        } else {
+            $where = '';
+        }
+        $mediaCategories = MediaCategory::findAll($where);
 
         $this->render('media::mediacategories::index', array(
             'mediaCategories' => $mediaCategories,
@@ -32,10 +38,14 @@ class MediacategoriesController extends CockpitController
             $this->mediaCategory = new MediaCategory();
         }
 
+        $siteOptions = Site::getOptions();
+
         $this->render('media::mediacategories::edit', array(
             'mediaCategory' => $this->mediaCategory,
             'pageTitle' => '<i class="fa fa-picture-o fa-brown"></i> Gestion des catégories de média',
             'boxTitle' => 'Nouvelle catégorie de media',
+            'siteOptions' => $siteOptions,
+            'selectSite' => $this->current_administrator->site_id === null,
             'formAction' => Router::url('cockpit_media_mediacategories_create')
         ));
     }
@@ -46,10 +56,14 @@ class MediacategoriesController extends CockpitController
             $this->mediaCategory = MediaCategory::findById($id);
         }
 
+        $siteOptions = Site::getOptions();
+
         $this->render('media::mediacategories::edit', array(
             'mediaCategory' => $this->mediaCategory,
             'pageTitle' => '<i class="fa fa-picture-o fa-brown"></i> Gestion des catégories de média',
             'boxTitle' => 'Modification catégorie de media n°'.$id,
+            'siteOptions' => $siteOptions,
+            'selectSite' => $this->current_administrator->site_id === null,
             'formAction' => Router::url('cockpit_media_mediacategories_update_'.$id)
         ));
     }
@@ -57,6 +71,10 @@ class MediacategoriesController extends CockpitController
     public function createAction()
     {
         $this->mediaCategory = new MediaCategory();
+
+        if (!isset($this->request->post['site_id'])) {
+            $this->request->post['site_id'] = $this->site->id;
+        }
 
         if ($this->mediaCategory->save($this->request->post)) {
             Session::addFlash('Catégorie de media ajoutée', 'success');
@@ -71,6 +89,10 @@ class MediacategoriesController extends CockpitController
     public function updateAction($id)
     {
         $this->mediaCategory = MediaCategory::findById($id);
+
+        if (!isset($this->request->post['site_id'])) {
+            $this->request->post['site_id'] = $this->site->id;
+        }
 
         if ($this->mediaCategory->save($this->request->post)) {
             Session::addFlash('Catégorie de media modifiée', 'success');

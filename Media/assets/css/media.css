@@ -12,6 +12,13 @@
 	width: 100px;
 	height: 100px;
 	position: relative;
+	vertical-align: top;
+	text-align: center;
+}
+
+#select_medias_dialog .medias .media .media-image {
+	width: 94px;
+	height: 94px;
 }
 
 #select_medias_dialog .medias .media:hover {
