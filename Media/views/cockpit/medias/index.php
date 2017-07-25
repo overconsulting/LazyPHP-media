@@ -1,7 +1,7 @@
-<h1 class="page-title">{{ titlePage }}</h1>
+<h1 class="page-title">{{ pageTitle }}</h1>
 <div class="box box-brown">
     <div class="box-header">
-        <h3 class="box-title">{{ titleBox }}</h3>
+        <h3 class="box-title">{{ boxTitle }}</h3>
         <div class="box-tools pull-right">
             {% button url="cockpit_media_medias_new" type="success" icon="plus" content="" class="btn-sm" hint="Nouveau media" %}
             {% button url="cockpit_media_medias_generateimages" type="primary" icon="refresh" content="" class="btn-sm" hint="Regénérer toutes les images" onclick="showHourglass();" %}

@@ -8,6 +8,7 @@ use Core\Router;
 
 use Media\models\Media;
 use Media\models\MediaCategory;
+use MultiSite\models\Site;
 
 class MediasController extends CockpitController
 {
@@ -18,15 +19,20 @@ class MediasController extends CockpitController
 
     public function indexAction()
     {
-        $medias = Media::findAll();
+        if ($this->site !== null) {
+            $where = 'site_id = '.$this->site->id;
+        } else {
+            $where = '';
+        }
+        $medias = Media::findAll($where);
 
         $typeOptions = Media::getTypeOptions();
 
         $this->render('media::medias::index', array(
             'medias' => $medias,
             'typeOptions' => $typeOptions,
-            'titlePage'         => '<i class="fa fa-picture-o fa-brown"></i> Gestion des médias',
-            'titleBox'          => 'Liste des médias'
+            'pageTitle' => '<i class="fa fa-picture-o fa-brown"></i> Gestion des médias',
+            'boxTitle' => 'Liste des médias'
         ));
     }
 
@@ -40,13 +46,17 @@ class MediasController extends CockpitController
 
         $mediacategoryOptions = MediaCategory::getOptions();
 
+        $siteOptions = Site::getOptions();
+
         $this->render('media::medias::edit', array(
             'id' => 0,
             'media' => $this->media,
             'typeOptions' => $typeOptions,
             'mediacategoryOptions' => $mediacategoryOptions,
-            'titlePage'     => '<i class="fa fa-picture-o fa-brown"></i> Gestion des médias',
-            'titleBox'      => 'Ajouter un Nouveau média',
+            'siteOptions' => $siteOptions,
+            'selectSite' => $this->current_administrator->site_id === null,
+            'pageTitle' => '<i class="fa fa-picture-o fa-brown"></i> Gestion des médias',
+            'boxTitle' => 'Ajouter un Nouveau média',
             'formAction' => Router::url('cockpit_media_medias_create')
         ));
     }
@@ -61,20 +71,28 @@ class MediasController extends CockpitController
 
         $mediacategoryOptions = MediaCategory::getOptions();
 
+        $siteOptions = Site::getOptions();
+
         $this->render('media::medias::edit', array(
-            'id'                    => $id,
-            'media'                 => $this->media,
-            'typeOptions'           => $typeOptions,
-            'mediacategoryOptions'  => $mediacategoryOptions,
-            'titlePage'             => '<i class="fa fa-picture-o fa-brown"></i> Gestion des médias',
-            'titleBox'              => 'Modification du média n°'.$id,
-            'formAction'            => Router::url('cockpit_media_medias_update_'.$id)
+            'id' => $id,
+            'media' => $this->media,
+            'typeOptions' => $typeOptions,
+            'mediacategoryOptions' => $mediacategoryOptions,
+            'siteOptions' => $siteOptions,
+            'selectSite' => $this->current_administrator->site_id === null,
+            'pageTitle' => '<i class="fa fa-picture-o fa-brown"></i> Gestion des médias',
+            'boxTitle' => 'Modification du média n°'.$id,
+            'formAction' => Router::url('cockpit_media_medias_update_'.$id)
         ));
     }
 
     public function createAction()
     {
         $this->media = new Media();
+
+        if (!isset($this->request->post['site_id'])) {
+            $this->request->post['site_id'] = $this->site->id;
+        }
 
         if ($this->media->save($this->request->post)) {
             $this->media->generateImages();
@@ -90,6 +108,10 @@ class MediasController extends CockpitController
     public function updateAction($id)
     {
         $this->media = Media::findById($id);
+
+        if (!isset($this->request->post['site_id'])) {
+            $this->request->post['site_id'] = $this->site->id;
+        }
 
         if ($this->media->save($this->request->post)) {
             $this->media->generateImages();

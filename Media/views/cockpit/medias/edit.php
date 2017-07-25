@@ -1,13 +1,16 @@
-<h1 class="page-title">{{ titlePage }}</h1>
+<h1 class="page-title">{{ pageTitle }}</h1>
 <div class="box box-brown">
     <div class="box-header">
-        <h3 class="box-title">{{ titleBox }}</h3>
+        <h3 class="box-title">{{ boxTitle }}</h3>
         <div class="box-tools pull-right">
             {% button url="cockpit_media_medias" type="secondary" icon="arrow-left" content="" size="sm" %}
         </div>
     </div>
     <div class="box-body">
         {% form_open id="formMedia" action="formAction" %}
+<?php if ($selectSite): ?>
+            {% input_select name="site_id" model="media.site_id" label="Site" options="siteOptions" %}
+<?php endif; ?>
             {% input_select name="type" model="media.type" options="typeOptions" label="Type de media" %}
             {% input_select name="mediacategory_id" model="media.mediacategory_id" label="Catégorie" options="mediacategoryOptions" %}
             {% input_text name="name" model="media.name" label="Nom" %}

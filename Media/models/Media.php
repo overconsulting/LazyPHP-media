@@ -9,6 +9,7 @@ use Media\models\MediaFormat;
 class Media extends Model
 {
     protected $permittedColumns = array(
+        'site_id',
         'type',
         'mediacategory_id',
         'name',
@@ -37,6 +38,11 @@ class Media extends Model
     public function getAssociations()
     {
         return array(
+            'site' => array(
+                'type' => '1',
+                'model' => 'MultiSite\\models\\Site',
+                'key' => 'site_id',
+            ),
             'mediacategory' => array(
                 'type' => '1',
                 'model' => 'Media\\models\\MediaCategory',
