@@ -22,10 +22,13 @@ class SelectmediasController extends FrontController
             $where[] = 'type = \''.$mediaType.'\'';
         }
 
-        $mediaCategory = isset($this->request->post['mediaCategory']) ? $this->request->post['mediaCategory'] : '';
-        if ($mediaCategory != '') {
-            $mediaCategory = MediaCategory::findByCode($mediaCategory);
-            $where[] = 'mediacategory_id = '.$mediaCategory->id;
+        $mediaCategoryCode = isset($this->request->post['mediaCategory']) ? $this->request->post['mediaCategory'] : '';
+
+        if ($mediaCategoryCode != '') {
+            $mediaCategory = MediaCategory::findByCode($mediaCategoryCode);
+            if ($mediaCategory->id != null) {
+                $where[] = 'mediacategory_id = '.$mediaCategory->id;
+            }
         }
 
         $where = !empty($where) ? implode(' and ', $where) : '';
@@ -115,6 +118,7 @@ class SelectmediasController extends FrontController
 
         $media = new Media();
         $media->name = date('YmdHis');
+        $media->site_id = $this->site->id;
 
         if ($media->save($this->request->post)) {
             $media->generateImages();
