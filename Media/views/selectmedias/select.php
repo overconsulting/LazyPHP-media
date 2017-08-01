@@ -57,8 +57,11 @@ foreach ($params['mediaGroups'] as $key => $mediaGroup) {
 
         echo
                     '<li class="media" data-media-id="'.$media->id.'" data-media-url="'.$url.'" data-media="'.$mediaJson.'">'.
-                        '<img class="media-image img-responsive" src="'.$url.'" />'.
+                        '<img class="media-image" src="'.$url.'" />'.
                         '<div class="media-title">'.htmlspecialchars($media->name).'</div>'.
+                        '<div class="media-actions">'.
+                            '<button type="button" class="media-del btn btn-danger btn-sm" title="Supprimer"><i class="fa fa-remove"></i></button>'.
+                        '</div>'.
                     '</li>';
     }
 
@@ -79,9 +82,10 @@ if (!$activeSet) {
                 <div>
                     <div class="col-xs-8 col-xs-offset-2">
                         {% form_open id="formSelectMediasAdd" action="formSelectMediasAddAction" %}
-                            {% input_hidden name="type" model="mediaType"  %}
-                            {% input_hidden name="mediacategory_id" model="mediaCategory.id" %}
+                            {% input_hidden name="type" model="mediaType" %}
                             {% input_upload name="image" label="Choisissez le media à ajouter" class="media media-image" type="image"  %}
+                            {% input_text name="name" label="Nom" %}
+                            {% input_select name="mediacategory_id" model="mediaCategory.id" label="Catégorie" options="mediacategoryOptions" %}
                             {% input_submit id="submitSelectMediasAdd" name="submit" value="save" formId="formSelectMediasAdd" class="btn-primary" icon="plus" label="Ajouter" %}
                         {% form_close %}
                     </div>

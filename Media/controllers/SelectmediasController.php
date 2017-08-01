@@ -95,6 +95,8 @@ class SelectmediasController extends FrontController
 
         $mediaFormatOptions = MediaFormat::getOptions();
 
+        $mediacategoryOptions = MediaCategory::getOptions();
+
         $this->render(
             'media::selectmedias::select',
             array(
@@ -103,6 +105,7 @@ class SelectmediasController extends FrontController
                 'mediaCategory' => $mediaCategory,
                 'mediaFormats' => $mediaFormats,
                 'mediaFormatOptions' => $mediaFormatOptions,
+                'mediacategoryOptions' => $mediacategoryOptions,
                 'formSelectMediasAddAction' => '/media/selectmedias/add'
             ),
             false
@@ -117,14 +120,38 @@ class SelectmediasController extends FrontController
         );
 
         $media = new Media();
-        $media->name = date('YmdHis');
+
+        if (!isset($this->request->post['name']) || $this->request->post['name'] == '') {
+            $this->request->post['name'] = date('YmdHis');
+        }
+
         $media->site_id = $this->site->id;
 
         if ($media->save($this->request->post)) {
             $media->generateImages();
         } else {
             $res['error'] = true;
-            $res['message'] = $media->errors['image'];
+            $res['message'] = implode(' | ', $media->errors);
+        }
+
+        echo json_encode($res);
+        exit;
+    }
+
+    public function delAction()
+    {
+        $res = array(
+            'error' => false,
+            'message' => ''
+        );
+
+        $id = isset($this->request->post['id']) && $this->request->post['id'] != '' ? $this->request->post['id'] : null;
+        if ($id !== null) {
+            $media = Media::findById($id);
+            $media->delete();
+        } else {
+            $res['error'] = true;
+            $res['message'] = 'Id media invalide';
         }
 
         echo json_encode($res);

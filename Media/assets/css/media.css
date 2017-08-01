@@ -9,21 +9,36 @@
 	display: inline-block;
 	margin-right: 20px;
 	margin-left: 20px;
-	width: 100px;
-	height: 100px;
+	width: 150px;
+	height: 150px;
 	position: relative;
 	vertical-align: top;
 	text-align: center;
 }
 
 #select_medias_dialog .medias .media .media-image {
-	width: 94px;
-	height: 94px;
+	width: 144px;
+	height: 144px;
+}
+
+#select_medias_dialog .medias .media .media-title {
+	overflow: hidden;
+}
+
+#select_medias_dialog .medias .media .media-actions {
+	display: none;
+	position: absolute;
+	top: -6px;
+	right: -6px;
 }
 
 #select_medias_dialog .medias .media:hover {
 	border: solid 3px blue;
 	cursor: pointer;
+}
+
+#select_medias_dialog .medias .media:hover .media-actions {
+	display: block;
 }
 
 #select_medias_dialog .medias .media.selected {
@@ -33,6 +48,10 @@
 
 #select_medias_dialog .tab-pane {
 	padding-top: 20px;
+}
+
+#select_medias_dialog .card {
+	margin-bottom: 20px;
 }
 
 #media_properties .media-properties td {

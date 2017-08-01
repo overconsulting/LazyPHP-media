@@ -50,6 +50,7 @@ SelectMediasDialog.prototype.selectMedias = function(params) {
 
 SelectMediasDialog.prototype.selectMediasLoadEvent = function() {
     $("#select_medias_dialog .media").on("click", this.mediaClickEvent.bind(this));
+    $("#select_medias_dialog .media-del").on("click", this.mediaDelEvent.bind(this));
     $("#formSelectMediasAdd").on("submit", this.mediaAddClickEvent.bind(this));
     $($("#select_medias_dialog a[role=tab]")[0]).tab('show');
     uploadInit();
@@ -89,15 +90,47 @@ SelectMediasDialog.prototype.selectMediasValidEvent = function() {
     }
 }
 
+SelectMediasDialog.prototype.mediaDelEvent = function(event) {
+    if (confirm("Vous confirmer vouloir supprimer ce media?")) {
+        var $media = $(event.currentTarget).parents(".media");
+        var media = JSON.parse(decodeURIComponent($media.data("media")));
+
+        var postData = new FormData();
+        postData.append("id", media.id);
+
+    }
+
+    $.ajax({
+        url: "/media/selectmedias/del",
+        method: "post",
+        data: postData,
+        processData: false,
+        contentType: false,
+        dataType: 'text',
+        context: this,
+        success: this.mediaDelSuccessEvent,
+        error: this.mediaAjaxErrorEvent
+    });
+
+    event.stopPropagation();
+    event.preventDefault();
+    return false;
+}
+
+SelectMediasDialog.prototype.mediaDelSuccessEvent = function(data, textStatus, jqXHR) {
+    res = JSON.parse(data);
+    if (res.error) {
+        alert(res.message);
+    } else {
+        $(".input-media-button").trigger("click");
+    }
+}
+
 SelectMediasDialog.prototype.mediaClickEvent = function(event) {
     var $media = $(event.currentTarget);
 
     if (this.multiple) {
-        if ($media.hasClass("selected")) {
-            $media.removeClass("selected");
-        } else {
-            $media.addClass("selected");
-        }
+        $media.toggleClass("selected");
     } else {
         $(".media").removeClass("selected");
         $media.addClass("selected");
@@ -142,7 +175,7 @@ SelectMediasDialog.prototype.mediaAddClickEvent = function(event) {
         dataType: 'text',
         context: this,
         success: this.mediaAddSuccessEvent,
-        error: this.mediaAddErrorEvent
+        error: this.mediaAjaxErrorEvent
     });
 
     event.preventDefault();
@@ -158,7 +191,7 @@ SelectMediasDialog.prototype.mediaAddSuccessEvent = function(data, textStatus, j
     }
 }
 
-SelectMediasDialog.prototype.mediaAddErrorEvent = function(jqXHR, textStatus, errorThrown) {
+SelectMediasDialog.prototype.mediaAjaxErrorEvent = function(jqXHR, textStatus, errorThrown) {
     console.log(textStatus, errorThrown);
 }
 
@@ -170,7 +203,7 @@ function formMediaTypeChange(event) {
     }
 }
 
-function selectMedias(event) {
+function selectMediasShow(event) {
     var $inputMediaButton = $(event.currentTarget);
 
     var inputId = $inputMediaButton.data("inputId");
@@ -214,5 +247,5 @@ $(document).ready(function() {
     // $("#formMedia input[type=file].media").on("change", formMediaTypeChange);
     // mediaTypeChange(null);
 
-    $(".input-media-button").on("click", selectMedias);
+    $(".input-media-button").on("click", selectMediasShow);
 });
