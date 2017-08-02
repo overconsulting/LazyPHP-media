@@ -24,6 +24,7 @@ class SelectmediasController extends FrontController
 
         $mediaCategoryCode = isset($this->request->post['mediaCategory']) ? $this->request->post['mediaCategory'] : '';
 
+        $mediaCategory = null;
         if ($mediaCategoryCode != '') {
             $mediaCategory = MediaCategory::findByCode($mediaCategoryCode);
             if ($mediaCategory->id != null) {
