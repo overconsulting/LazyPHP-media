@@ -26,8 +26,9 @@ foreach ($params['medias'] as $media) {
     $thumbnail = '';
     switch ($media->type) {
         case 'image':
-            if ($media->image->url != '') {
-                $thumbnail = '<img src="'.$media->image->url.'" width="25" height="25" />';
+            $url = $media->getUrl();
+            if ($url != '') {
+                $thumbnail = '<img src="'.$url.'" width="25" height="25" />';
             }
             break;
 
@@ -50,7 +51,7 @@ foreach ($params['medias'] as $media) {
             '<td>'.$params['typeOptions'][$media->type]['label'].'</td>'.
             '<td>'.$mediaCategory.'</td>'.
             '<td>'.$media->name.'</td>'.
-            '<td>'.$media->image->url.'</td>'.
+            '<td>'.$url.'</td>'.
             '<td>';?>
                 {% button url="cockpit_media_medias_edit_<?php echo $media->id ?>" type="info" size="sm" icon="pencil" content="" %}
                 {% button url="cockpit_media_medias_delete_<?php echo $media->id ?>" type="danger" size="sm" icon="trash-o" confirmation="Vous confirmer vouloir supprimer ce media?" %}
