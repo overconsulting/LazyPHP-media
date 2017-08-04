@@ -1,5 +1,5 @@
-<div class="row">
-    <div class="col-md-9">
+<div class="row no-gutters">
+    <div class="medias-column col-md-8">
         <ul class="nav nav-tabs" role="tablist">
 <?php
 
@@ -93,7 +93,7 @@ if (!$activeSet) {
             </div>
         </div>
     </div>
-    <div class="col-md-3">
+    <div class="media-properties-column col-md-4">
         <div class="card card-secondary">
             <div class="card-header">
                 Sélectionnez un format

@@ -61,12 +61,13 @@ SelectMediasDialog.prototype.selectMediasLoadEvent = function() {
 
 SelectMediasDialog.prototype.selectMediasDialogResizeEvent = function(event) {
     $("#select_medias_dialog .tab-content").each(function(index, tabContent) {
+        var padding = $("#select_medias_dialog .lazy-dialog-body").outerHeight() - $("#select_medias_dialog .lazy-dialog-body").height();
         var height = 
-            $("#select_medias_dialog .lazy-dialog-body").height() -
-            $("#select_medias_dialog .lazy-dialog-header").outerHeight() -
-            $("#select_medias_dialog .lazy-dialog-footer").outerHeight() -
-            $("#select_medias_dialog .nav-item").outerHeight();        
-        $(tabContent).outerHeight(height);
+            $("#select_medias_dialog .lazy-dialog-body").outerHeight() -
+            $("#select_medias_dialog .nav-item").outerHeight() -
+            padding / 2 - 1;
+        console.log(padding);
+        $(tabContent).height(height);
     });
 }
 
