@@ -49,11 +49,25 @@ SelectMediasDialog.prototype.selectMedias = function(params) {
 }
 
 SelectMediasDialog.prototype.selectMediasLoadEvent = function() {
+    $(window).on("resize", this.selectMediasDialogResizeEvent.bind(this));
+    $(window).trigger("resize");
+
     $("#select_medias_dialog .media").on("click", this.mediaClickEvent.bind(this));
     $("#select_medias_dialog .media-del").on("click", this.mediaDelEvent.bind(this));
     $("#formSelectMediasAdd").on("submit", this.mediaAddClickEvent.bind(this));
     $($("#select_medias_dialog a[role=tab]")[0]).tab('show');
     uploadInit();
+}
+
+SelectMediasDialog.prototype.selectMediasDialogResizeEvent = function(event) {
+    $("#select_medias_dialog .tab-content").each(function(index, tabContent) {
+        var height = 
+            $("#select_medias_dialog .lazy-dialog-body").height() -
+            $("#select_medias_dialog .lazy-dialog-header").outerHeight() -
+            $("#select_medias_dialog .lazy-dialog-footer").outerHeight() -
+            $("#select_medias_dialog .nav-item").outerHeight();        
+        $(tabContent).outerHeight(height);
+    });
 }
 
 SelectMediasDialog.prototype.selectMediasValidEvent = function() {
@@ -132,8 +146,8 @@ SelectMediasDialog.prototype.mediaClickEvent = function(event) {
     if (this.multiple) {
         $media.toggleClass("selected");
     } else {
-        $(".media").removeClass("selected");
-        $media.addClass("selected");
+        $(".media").not($media).removeClass("selected");
+        $media.toggleClass("selected");
     }
 
     var media = JSON.parse(decodeURIComponent($media.data("media")));

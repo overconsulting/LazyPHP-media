@@ -15,7 +15,7 @@ foreach ($params['mediaGroups'] as $key => $mediaGroup) {
     echo
         '<li class="nav-item">'.
             '<a href="#medias_'.$mediaGroup['code'].'" class="nav-link '.$classActive.'" role="tab" data-toggle="tab">'.
-                'Medias '.$mediaGroup['label'].'
+                $mediaGroup['label'].'
             </a>'.
         '</li>';
 }

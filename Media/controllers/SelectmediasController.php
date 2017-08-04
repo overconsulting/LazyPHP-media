@@ -17,6 +17,10 @@ class SelectmediasController extends FrontController
     {
         $where = array();
 
+        if ($this->site !== null) {
+            $where[] = 'site_id = '.$this->site->id;
+        }
+
         $mediaType = isset($this->request->post['mediaType']) ? $this->request->post['mediaType'] : '';
         if ($mediaType != '') {
             $where[] = 'type = \''.$mediaType.'\'';
@@ -27,11 +31,10 @@ class SelectmediasController extends FrontController
         $mediaCategory = null;
         if ($mediaCategoryCode != '') {
             $mediaCategory = MediaCategory::findByCode($mediaCategoryCode);
-            if ($mediaCategory->id != null) {
-                $where[] = 'mediacategory_id = '.$mediaCategory->id;
+            if ($mediaCategory != null) {
+                // $where[] = 'mediacategory_id = '.$mediaCategory->id;
             }
         }
-
         $where = !empty($where) ? implode(' and ', $where) : '';
 
         $allMedias = Media::findAll(
@@ -79,12 +82,12 @@ class SelectmediasController extends FrontController
             if (isset($mediaGroups[$key])) {
                 $mediaGroups[$key]['items'][] = $media;
             } else {
-                if(!isset($media->mediacategory)) {
+                if($media->mediacategory_id === null) {
                   $mediaGroups[$key]['code'] = 'medias';
-                  $mediaGroups[$key]['label'] = 'commun';
+                  $mediaGroups[$key]['label'] = 'Commun';
                 } else {
                     $mediaGroups[$key]['code'] = $key != 0 ? $media->mediacategory->code : 'medias';
-                    $mediaGroups[$key]['label'] = $key != 0 ? strtolower($media->mediacategory->label) : 'commun';
+                    $mediaGroups[$key]['label'] = $key != 0 ? $media->mediacategory->label : 'Commun';
                 }
                 $mediaGroups[$key]['items'] = array($media);
                 if ($active == '') {
@@ -93,6 +96,8 @@ class SelectmediasController extends FrontController
             }
         }
         ksort($mediaGroups);
+
+//debug($mediaGroups, false);
 
         $mediaFormatOptions = MediaFormat::getOptions();
 
