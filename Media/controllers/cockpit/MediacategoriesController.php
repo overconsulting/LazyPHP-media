@@ -7,7 +7,7 @@ use Core\Session;
 use Core\Router;
 
 use Media\models\MediaCategory;
-use MultiSite\models\Site;
+use Core\models\Site;
 
 class MediacategoriesController extends CockpitController
 {
@@ -77,10 +77,10 @@ class MediacategoriesController extends CockpitController
         }
 
         if ($this->mediaCategory->save($this->request->post)) {
-            Session::addFlash('Catégorie de media ajoutée', 'success');
+            $this->addFlash('Catégorie de media ajoutée', 'success');
             $this->redirect('cockpit_media_mediacategories');
         } else {
-            Session::addFlash('Erreur(s) dans le formulaire', 'danger');
+            $this->addFlash('Erreur(s) dans le formulaire', 'danger');
         }
 
         $this->newAction();
@@ -95,10 +95,10 @@ class MediacategoriesController extends CockpitController
         }
 
         if ($this->mediaCategory->save($this->request->post)) {
-            Session::addFlash('Catégorie de media modifiée', 'success');
+            $this->addFlash('Catégorie de media modifiée', 'success');
             $this->redirect('cockpit_media_mediacategories');
         } else {
-            Session::addFlash('Erreur(s) dans le formulaire', 'danger');
+            $this->addFlash('Erreur(s) dans le formulaire', 'danger');
         }
 
         $this->editAction($id);
@@ -108,7 +108,7 @@ class MediacategoriesController extends CockpitController
     {
         $mediaCategory = MediaCategory::findById($id);
         $mediaCategory->delete();
-        Session::addFlash('Catégorie de media supprimée', 'success');
+        $this->addFlash('Catégorie de media supprimée', 'success');
         $this->redirect('cockpit_media_mediacategories');
     }
 }

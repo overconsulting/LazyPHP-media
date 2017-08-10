@@ -59,10 +59,10 @@ class MediaformatsController extends CockpitController
         $this->mediaFormat = new MediaFormat();
 
         if ($this->mediaFormat->save($this->request->post)) {
-            Session::addFlash('Format de media ajouté', 'success');
+            $this->addFlash('Format de media ajouté', 'success');
             $this->redirect('cockpit_media_mediaformats');
         } else {
-            Session::addFlash('Erreur(s) dans le formulaire', 'danger');
+            $this->addFlash('Erreur(s) dans le formulaire', 'danger');
         }
 
         $this->newAction();
@@ -73,10 +73,10 @@ class MediaformatsController extends CockpitController
         $this->mediaFormat = MediaFormat::findById($id);
 
         if ($this->mediaFormat->save($this->request->post)) {
-            Session::addFlash('Format de media modifié', 'success');
+            $this->addFlash('Format de media modifié', 'success');
             $this->redirect('cockpit_media_mediaformats');
         } else {
-            Session::addFlash('Erreur(s) dans le formulaire', 'danger');
+            $this->addFlash('Erreur(s) dans le formulaire', 'danger');
         }
 
         $this->editAction($id);
@@ -86,7 +86,7 @@ class MediaformatsController extends CockpitController
     {
         $mediaFormat = MediaFormat::findById($id);
         $mediaFormat->delete();
-        Session::addFlash('Format de media supprimé', 'success');
+        $this->addFlash('Format de media supprimé', 'success');
         $this->redirect('cockpit_media_mediaformats');
     }
 }

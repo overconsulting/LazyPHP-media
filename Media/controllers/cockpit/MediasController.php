@@ -8,7 +8,7 @@ use Core\Router;
 
 use Media\models\Media;
 use Media\models\MediaCategory;
-use MultiSite\models\Site;
+use Core\models\Site;
 
 class MediasController extends CockpitController
 {
@@ -96,10 +96,10 @@ class MediasController extends CockpitController
 
         if ($this->media->save($this->request->post)) {
             $this->media->generateImages();
-            Session::addFlash('Media ajouté', 'success');
+            $this->addFlash('Media ajouté', 'success');
             $this->redirect('cockpit_media_medias');
         } else {
-            Session::addFlash('Erreur(s) dans le formulaire', 'danger');
+            $this->addFlash('Erreur(s) dans le formulaire', 'danger');
         }
 
         $this->newAction();
@@ -115,10 +115,10 @@ class MediasController extends CockpitController
 
         if ($this->media->save($this->request->post)) {
             $this->media->generateImages();
-            Session::addFlash('Media modifié', 'success');
+            $this->addFlash('Media modifié', 'success');
             $this->redirect('cockpit_media_medias');
         } else {
-            Session::addFlash('Erreur(s) dans le formulaire', 'danger');
+            $this->addFlash('Erreur(s) dans le formulaire', 'danger');
         }
 
         $this->editAction($id);
@@ -128,7 +128,7 @@ class MediasController extends CockpitController
     {
         $media = Media::findById($id);
         $media->delete();
-        Session::addFlash('Media supprimé', 'success');
+        $this->addFlash('Media supprimé', 'success');
         $this->redirect('cockpit_media_medias');
     }
 
@@ -138,7 +138,7 @@ class MediasController extends CockpitController
         foreach ($medias as $media) {
             $media->generateImages();
         }
-        Session::addFlash('Images regénérées', 'success');
+        $this->addFlash('Images regénérées', 'success');
         $this->redirect('cockpit_media_medias');
     }
 }
