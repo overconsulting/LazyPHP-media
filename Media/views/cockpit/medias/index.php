@@ -3,8 +3,8 @@
     <div class="box-header">
         <h3 class="box-title">{{ boxTitle }}</h3>
         <div class="box-tools pull-right">
-            {% button url="cockpit_media_medias_new" type="success" icon="plus" content="" class="btn-sm" hint="Nouveau media" %}
-            {% button url="cockpit_media_medias_generateimages" type="primary" icon="refresh" content="" class="btn-sm" hint="Regénérer toutes les images" onclick="showHourglass();" %}
+            {% button url="cockpit_media_medias_new" type="success" icon="plus" size="sm" hint="Nouveau media" %}
+            {% button url="cockpit_media_medias_generateimages" type="primary" size="sm" icon="refresh" hint="Regénérer toutes les images" onclick="showHourglass();" %}
         </div>
     </div>
     <div class="box-body">
@@ -53,8 +53,8 @@ foreach ($params['medias'] as $media) {
             '<td>'.$media->name.'</td>'.
             '<td>'.$url.'</td>'.
             '<td>';?>
-                {% button url="cockpit_media_medias_edit_<?php echo $media->id ?>" type="info" size="sm" icon="pencil" content="" %}
-                {% button url="cockpit_media_medias_delete_<?php echo $media->id ?>" type="danger" size="sm" icon="trash-o" confirmation="Vous confirmer vouloir supprimer ce media?" %}
+                {% button url="cockpit_media_medias_edit_<?php echo $media->id ?>" type="info" size="sm" icon="pencil" hint="Modifier" %}
+                {% button url="cockpit_media_medias_delete_<?php echo $media->id ?>" type="danger" size="sm" icon="trash-o" hint="Supprimer" confirmation="Vous confirmer vouloir supprimer ce media?" %}
 <?php
 echo
         '</td>'.

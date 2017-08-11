@@ -3,7 +3,7 @@
     <div class="box-header">
         <h3 class="box-title">{{ boxTitle }}</h3>
         <div class="box-tools pull-right">
-            {% button url="cockpit_media_mediaformats_new" type="success" icon="plus" content="" size="sm" %}
+            {% button url="cockpit_media_mediaformats_new" type="success" size="sm" icon="plus" hint="Nouveau format de media" %}
         </div>
     </div>
     <div class="box-body">
@@ -30,7 +30,7 @@ foreach ($params['mediaFormats'] as $mediaFormat) {
             '<td>'.$mediaFormat->height.'</td>'.
             '<td>';?>
                 {% button url="cockpit_media_mediaformats_edit_<?php echo $mediaFormat->id ?>" type="info" size="sm" icon="pencil" content="" %}
-                {% button url="cockpit_media_mediaformats_delete_<?php echo $mediaFormat->id ?>" type="danger" size="sm" icon="trash-o" confirmation="Vous confirmer vouloir supprimer cette catégorie de media?" %}
+                {% button url="cockpit_media_mediaformats_delete_<?php echo $mediaFormat->id ?>" type="danger" size="sm" icon="trash-o" confirmation="Vous confirmer vouloir supprimer ce format de media?" %}
 <?php
 echo
         '</td>'.
