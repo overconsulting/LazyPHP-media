@@ -97,8 +97,6 @@ class SelectmediasController extends FrontController
         }
         ksort($mediaGroups);
 
-//debug($mediaGroups, false);
-
         $mediaFormatOptions = MediaFormat::getOptions();
 
         $mediacategoryOptions = MediaCategory::getOptions();
