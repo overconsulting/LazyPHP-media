@@ -66,7 +66,6 @@ SelectMediasDialog.prototype.selectMediasDialogResizeEvent = function(event) {
             $("#select_medias_dialog .lazy-dialog-body").outerHeight() -
             $("#select_medias_dialog .nav-item").outerHeight() -
             padding / 2 - 1;
-        console.log(padding);
         $(tabContent).height(height);
     });
 }
@@ -113,19 +112,18 @@ SelectMediasDialog.prototype.mediaDelEvent = function(event) {
         var postData = new FormData();
         postData.append("id", media.id);
 
+        $.ajax({
+            url: "/media/selectmedias/del",
+            method: "post",
+            data: postData,
+            processData: false,
+            contentType: false,
+            dataType: 'text',
+            context: this,
+            success: this.mediaDelSuccessEvent,
+            error: this.mediaAjaxErrorEvent
+        });
     }
-
-    $.ajax({
-        url: "/media/selectmedias/del",
-        method: "post",
-        data: postData,
-        processData: false,
-        contentType: false,
-        dataType: 'text',
-        context: this,
-        success: this.mediaDelSuccessEvent,
-        error: this.mediaAjaxErrorEvent
-    });
 
     event.stopPropagation();
     event.preventDefault();

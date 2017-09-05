@@ -99,7 +99,7 @@ if (!$activeSet) {
                 Sélectionnez un format
             </div>
             <div class="card-block">
-                {% form_open id="formSelectMediasFormat" class=""%}
+                {% form_open id="formSelectMediasFormat" class="" %}
                     {% input_radiogroup name="media_format" options="mediaFormatOptions" %}
                 {% form_close %}
             </div>
