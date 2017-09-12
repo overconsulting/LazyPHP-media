@@ -3,7 +3,7 @@
     <div class="box-header">
         <h3 class="box-title">{{ boxTitle }}</h3>
         <div class="box-tools pull-right">
-            {% button url="cockpit_media_mediaformats" type="secondary" icon="arrow-left" content="" size="sm" %}
+            {% button url="cockpit_media_mediaformats" type="secondary" icon="arrow-left" size="sm" hint="Retour" %}
         </div>
     </div>
     <div class="box-body">

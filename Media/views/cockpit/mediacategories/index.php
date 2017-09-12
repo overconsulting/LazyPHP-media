@@ -3,7 +3,7 @@
     <div class="box-header">
         <h3 class="box-title">{{ boxTitle }}</h3>
         <div class="box-tools pull-right">
-            {% button url="cockpit_media_mediacategories_new" type="success" size="sm" icon="plus" hint="Nouvelle catégorie de media" %}
+            {% button url="cockpit_media_mediacategories_new" type="success" size="sm" icon="plus" hint="Ajouter" %}
         </div>
     </div>
     <div class="box-body">
@@ -25,8 +25,8 @@ foreach ($params['mediaCategories'] as $mediaCategory) {
             '<td>'.$mediaCategory->code.'</td>'.
             '<td>'.$mediaCategory->label.'</td>'.
             '<td>';?>
-                {% button url="cockpit_media_mediacategories_edit_<?php echo $mediaCategory->id ?>" type="info" size="sm" icon="pencil" content="" %}
-                {% button url="cockpit_media_mediacategories_delete_<?php echo $mediaCategory->id ?>" type="danger" size="sm" icon="trash-o" confirmation="Vous confirmer vouloir supprimer cette catégorie de media?" %}
+                {% button url="cockpit_media_mediacategories_edit_<?php echo $mediaCategory->id ?>" type="info" size="sm" icon="pencil" hint="Modifier" %}
+                {% button url="cockpit_media_mediacategories_delete_<?php echo $mediaCategory->id ?>" type="danger" size="sm" icon="trash-o" confirmation="Vous confirmer vouloir supprimer cette catégorie de media ?" hint="Supprimer" %}
 <?php
 echo
         '</td>'.

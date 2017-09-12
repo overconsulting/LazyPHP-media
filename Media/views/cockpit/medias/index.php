@@ -3,7 +3,7 @@
     <div class="box-header">
         <h3 class="box-title">{{ boxTitle }}</h3>
         <div class="box-tools pull-right">
-            {% button url="cockpit_media_medias_new" type="success" icon="plus" size="sm" hint="Nouveau media" %}
+            {% button url="cockpit_media_medias_new" type="success" icon="plus" size="sm" hint="Ajouter" %}
             {% button url="cockpit_media_medias_generateimages" type="primary" size="sm" icon="refresh" hint="Regénérer toutes les images" onclick="showHourglass();" %}
         </div>
     </div>
@@ -54,7 +54,7 @@ foreach ($params['medias'] as $media) {
             '<td>'.$url.'</td>'.
             '<td>';?>
                 {% button url="cockpit_media_medias_edit_<?php echo $media->id ?>" type="info" size="sm" icon="pencil" hint="Modifier" %}
-                {% button url="cockpit_media_medias_delete_<?php echo $media->id ?>" type="danger" size="sm" icon="trash-o" hint="Supprimer" confirmation="Vous confirmer vouloir supprimer ce media?" %}
+                {% button url="cockpit_media_medias_delete_<?php echo $media->id ?>" type="danger" size="sm" icon="trash-o" confirmation="Vous confirmer vouloir supprimer ce media?" hint="Supprimer" %}
 <?php
 echo
         '</td>'.
