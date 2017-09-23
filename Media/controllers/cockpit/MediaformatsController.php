@@ -10,20 +10,28 @@ use Media\models\MediaFormat;
 
 class MediaformatsController extends CockpitController
 {
-    /*
+    /**
      * @var Media\models\MediaFormat
      */
-    public $mediaFormat = null;
+    private $mediaFormat = null;
+
+    /**
+     * @var string
+     */
+    private $pageTitle = '<i class="fa fa-picture-o fa-brown"></i> Gestion des formats de media';
 
     public function indexAction()
     {
         $mediaFormats = MediaFormat::findAll();
 
-        $this->render('media::mediaformats::index', array(
-            'mediaFormats' => $mediaFormats,
-            'pageTitle' => '<i class="fa fa-picture-o fa-brown"></i> Gestion des formats de media',
-            'boxTitle' => 'Liste des formats de media'
-        ));
+        $this->render(
+            'media::mediaformats::index',
+            array(
+                'mediaFormats' => $mediaFormats,
+                'pageTitle' => $this->pageTitle,
+                'boxTitle' => 'Liste des formats de media'
+            )
+        );
     }
 
     public function newAction()
@@ -32,12 +40,15 @@ class MediaformatsController extends CockpitController
             $this->mediaFormat = new MediaFormat();
         }
 
-        $this->render('media::mediaformats::edit', array(
-            'mediaFormat' => $this->mediaFormat,
-            'pageTitle' => '<i class="fa fa-picture-o fa-brown"></i> Gestion des formats de media',
-            'boxTitle' => 'Nouveau format',
-            'formAction' => Router::url('cockpit_media_mediaformats_create')
-        ));
+        $this->render(
+            'media::mediaformats::edit',
+            array(
+                'mediaFormat' => $this->mediaFormat,
+                'pageTitle' => $this->pageTitle,
+                'boxTitle' => 'Nouveau format',
+                'formAction' => Router::url('cockpit_media_mediaformats_create')
+            )
+        );
     }
 
     public function editAction($id)
@@ -46,12 +57,15 @@ class MediaformatsController extends CockpitController
             $this->mediaFormat = MediaFormat::findById($id);
         }
 
-        $this->render('media::mediaformats::edit', array(
-            'mediaFormat' => $this->mediaFormat,
-            'pageTitle' => '<i class="fa fa-picture-o fa-brown"></i> Gestion des formats de media',
-            'boxTitle' => 'Modification format de media n°'.$id,
-            'formAction' => Router::url('cockpit_media_mediaformats_update_'.$id)
-        ));
+        $this->render(
+            'media::mediaformats::edit',
+            array(
+                'mediaFormat' => $this->mediaFormat,
+                'pageTitle' => $this->pageTitle,
+                'boxTitle' => 'Modification format de media n°'.$id,
+                'formAction' => Router::url('cockpit_media_mediaformats_update_'.$id)
+            )
+        );
     }
 
     public function createAction()

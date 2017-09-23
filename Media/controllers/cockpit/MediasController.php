@@ -12,10 +12,15 @@ use Core\models\Site;
 
 class MediasController extends CockpitController
 {
-    /*
+    /**
      * @var Media\models\Media
      */
-    public $media = null;
+    private $media = null;
+
+    /**
+     * @var string
+     */
+    private $pageTitle = '<i class="fa fa-picture-o fa-brown"></i> Gestion des médias';
 
     public function indexAction()
     {
@@ -33,7 +38,7 @@ class MediasController extends CockpitController
             array(
                 'medias' => $medias,
                 'typeOptions' => $typeOptions,
-                'pageTitle' => '<i class="fa fa-picture-o fa-brown"></i> Gestion des médias',
+                'pageTitle' => $this->pageTitle,
                 'boxTitle' => 'Liste des médias'
             )
         );
@@ -59,8 +64,8 @@ class MediasController extends CockpitController
                 'typeOptions' => $typeOptions,
                 'mediacategoryOptions' => $mediacategoryOptions,
                 'siteOptions' => $siteOptions,
-                'selectSite' => $this->current_administrator->site_id === null,
-                'pageTitle' => '<i class="fa fa-picture-o fa-brown"></i> Gestion des médias',
+                'selectSite' => $this->current_user->site_id === null,
+                'pageTitle' => $this->pageTitle,
                 'boxTitle' => 'Ajouter un Nouveau média',
                 'formAction' => Router::url('cockpit_media_medias_create')
             )
@@ -87,11 +92,12 @@ class MediasController extends CockpitController
                 'typeOptions' => $typeOptions,
                 'mediacategoryOptions' => $mediacategoryOptions,
                 'siteOptions' => $siteOptions,
-                'selectSite' => $this->current_administrator->site_id === null,
-                'pageTitle' => '<i class="fa fa-picture-o fa-brown"></i> Gestion des médias',
+                'selectSite' => $this->current_user->site_id === null,
+                'pageTitle' => $this->pageTitle,
                 'boxTitle' => 'Modification du média n°'.$id,
                 'formAction' => Router::url('cockpit_media_medias_update_'.$id)
-            ));
+            )
+        );
     }
 
     public function createAction()

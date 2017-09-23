@@ -11,10 +11,15 @@ use Core\models\Site;
 
 class MediacategoriesController extends CockpitController
 {
-    /*
+    /**
      * @var Media\models\MediaCategory
      */
-    public $mediaCategory = null;
+    private $mediaCategory = null;
+
+    /**
+     * @var string
+     */
+    private $pageTitle = '<i class="fa fa-picture-o fa-brown"></i> Gestion des catégories de média';
 
     public function indexAction()
     {
@@ -25,11 +30,14 @@ class MediacategoriesController extends CockpitController
         }
         $mediaCategories = MediaCategory::findAll($where);
 
-        $this->render('media::mediacategories::index', array(
-            'mediaCategories' => $mediaCategories,
-            'pageTitle' => '<i class="fa fa-picture-o fa-brown"></i> Gestion des catégories de média',
-            'boxTitle' => 'Liste des catégories de media'
-        ));
+        $this->render(
+            'media::mediacategories::index',
+            array(
+                'mediaCategories' => $mediaCategories,
+                'pageTitle' => $this->pageTitle,
+                'boxTitle' => 'Liste des catégories de media'
+            )
+        );
     }
 
     public function newAction()
@@ -40,14 +48,17 @@ class MediacategoriesController extends CockpitController
 
         $siteOptions = Site::getOptions();
 
-        $this->render('media::mediacategories::edit', array(
-            'mediaCategory' => $this->mediaCategory,
-            'pageTitle' => '<i class="fa fa-picture-o fa-brown"></i> Gestion des catégories de média',
-            'boxTitle' => 'Nouvelle catégorie de media',
-            'siteOptions' => $siteOptions,
-            'selectSite' => $this->current_administrator->site_id === null,
-            'formAction' => Router::url('cockpit_media_mediacategories_create')
-        ));
+        $this->render(
+            'media::mediacategories::edit',
+            array(
+                'mediaCategory' => $this->mediaCategory,
+                'pageTitle' => $this->pageTitle,
+                'boxTitle' => 'Nouvelle catégorie de media',
+                'siteOptions' => $siteOptions,
+                'selectSite' => $this->current_user->site_id === null,
+                'formAction' => Router::url('cockpit_media_mediacategories_create')
+            )
+        );
     }
 
     public function editAction($id)
@@ -60,10 +71,10 @@ class MediacategoriesController extends CockpitController
 
         $this->render('media::mediacategories::edit', array(
             'mediaCategory' => $this->mediaCategory,
-            'pageTitle' => '<i class="fa fa-picture-o fa-brown"></i> Gestion des catégories de média',
+            'pageTitle' => $this->pageTitle,
             'boxTitle' => 'Modification catégorie de media n°'.$id,
             'siteOptions' => $siteOptions,
-            'selectSite' => $this->current_administrator->site_id === null,
+            'selectSite' => $this->current_user->site_id === null,
             'formAction' => Router::url('cockpit_media_mediacategories_update_'.$id)
         ));
     }
