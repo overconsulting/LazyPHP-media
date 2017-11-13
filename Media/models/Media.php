@@ -131,7 +131,9 @@ class Media extends Model
 
     public function getUrl($format = '')
     {
-        if ($this->type == 'image') {
+        if ($this->url != "") {
+            $url = $this->url;
+        } else if ($this->type == 'image') {
             $url = $this->getImageUrlWithFormat($this->image->url, $format);
         } else {
             $url = $this->{$this->type} != '' ? $this->{$this->type}->url : '';
