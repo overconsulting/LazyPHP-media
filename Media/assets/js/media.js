@@ -95,7 +95,7 @@ SelectMediasDialog.prototype.selectMediasValidEvent = function() {
         }.bind(this));
 
         s = this.selectedMedias.join(",");
-        $("#" + this.inputId).val(s).trigger('change');
+        $("#" + this.inputId).val(s).trigger("change");
         $("#" + this.inputId + "_url").val(mediaUrl);
         $("#" + this.inputId + "_format").val(mediaFormat);
         $("#" + this.inputDisplayId).val("[" + s + "]" + (mediaUrl != "" ? " " + mediaUrl : ""));
