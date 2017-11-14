@@ -236,7 +236,7 @@ function selectMediasShow(event) {
     }
 
     var validEvent = $inputMediaButton.data("onValid");
-
+    
     params = {
         inputId: inputId,
         inputDisplayId: inputDisplayId,
@@ -253,6 +253,23 @@ function selectMediasShow(event) {
     return false;
 }
 
+function inputMediaClear(event) {
+    var $inputMediaClearButton = $(event.currentTarget);
+    var inputId = $inputMediaClearButton.data("inputId");
+    $("#"+inputId).val("");
+    $("#"+inputId+"_url").val("");
+    $("#"+inputId+"_format").val("");
+    $("#"+inputId+"_display").val("");
+
+    inputMediaClearEvent = $inputMediaClearButton.data("onClear");
+    if (inputMediaClearEvent != null && typeof window[inputMediaClearEvent] === 'function') {
+        window[inputMediaClearEvent]();
+    }
+
+    event.preventDefault();
+    return false;
+}
+
 $(document).ready(function() {
     $("#formMedia select[name=type]").on("change", formMediaTypeChange);
     formMediaTypeChange(null);
@@ -261,4 +278,5 @@ $(document).ready(function() {
     // mediaTypeChange(null);
 
     $(".input-media-button").on("click", selectMediasShow);
+    $(".input-media-clear-button").on("click", inputMediaClear);
 });
