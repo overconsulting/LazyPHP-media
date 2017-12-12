@@ -6,6 +6,7 @@ var SelectMediasDialog = function() {
     this.multiple = false;
     this.mediaType = "";
     this.mediaCategory = "";
+    this.loadEvent = null;
     this.validEvent = null;
 };
 
@@ -19,9 +20,26 @@ SelectMediasDialog.prototype.selectMedias = function(params) {
     this.mediaType = params.mediaType != null ? params.mediaType : "";
     this.mediaCategory = params.mediaCategory != null ? params.mediaCategory : "";
 
+    var selectMediasLoadEventFunctions = [];
+    if (params.loadEvent != null) {
+        if (typeof params.loadEvent === 'function') {
+            this.loadEvent = params.loadEvent;
+        } else if (typeof window[params.loadEvent] === 'function') {
+            this.loadEvent = window[params.loadEvent];
+        }
+        selectMediasLoadEventFunctions = [this.selectMediasLoadEvent.bind(this), this.loadEvent.bind(this)];
+    } else {
+        this.loadEvent = null;
+        selectMediasLoadEventFunctions = [this.selectMediasLoadEvent.bind(this)];
+    }
+
     var selectMediasValidEventFunctions = [];
-    if (params.validEvent != null && typeof window[params.validEvent] === 'function') {
-        this.validEvent = window[params.validEvent];
+    if (params.validEvent != null) {
+        if (typeof params.validEvent === 'function') {
+            this.validEvent = params.validEvent;
+        } else if (typeof window[params.validEvent] === 'function') {
+            this.validEvent = window[params.validEvent];
+        }
         selectMediasValidEventFunctions = [this.selectMediasValidEvent.bind(this), this.validEvent.bind(this)];
     } else {
         this.validEvent = null;
@@ -38,7 +56,7 @@ SelectMediasDialog.prototype.selectMedias = function(params) {
         title: "Medias",
         url: "/media/selectmedias/select",
         actions: {
-            load: this.selectMediasLoadEvent.bind(this),
+            load: selectMediasLoadEventFunctions,
 //          "cancel": null,
             valid: selectMediasValidEventFunctions
         }
@@ -61,7 +79,9 @@ SelectMediasDialog.prototype.selectMediasLoadEvent = function() {
 
 SelectMediasDialog.prototype.selectMediasDialogResizeEvent = function(event) {
     $("#select_medias_dialog .tab-content").each(function(index, tabContent) {
-        var padding = $("#select_medias_dialog .lazy-dialog-body").outerHeight() - $("#select_medias_dialog .lazy-dialog-body").height();
+        var padding = 
+            $("#select_medias_dialog .lazy-dialog-body").outerHeight() -
+            $("#select_medias_dialog .lazy-dialog-body").height();
         var height = 
             $("#select_medias_dialog .lazy-dialog-body").outerHeight() -
             $("#select_medias_dialog .nav-item").outerHeight() -
