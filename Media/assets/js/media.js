@@ -40,7 +40,7 @@ SelectMediasDialog.prototype.selectMedias = function(params) {
         } else if (typeof window[params.validEvent] === 'function') {
             this.validEvent = window[params.validEvent];
         }
-        selectMediasValidEventFunctions = [this.selectMediasValidEvent.bind(this), this.validEvent.bind(this)];
+        selectMediasValidEventFunctions = [this.selectMediasValidEvent.bind(this)];
     } else {
         this.validEvent = null;
         selectMediasValidEventFunctions = [this.selectMediasValidEvent.bind(this)];
@@ -79,10 +79,10 @@ SelectMediasDialog.prototype.selectMediasLoadEvent = function() {
 
 SelectMediasDialog.prototype.selectMediasDialogResizeEvent = function(event) {
     $("#select_medias_dialog .tab-content").each(function(index, tabContent) {
-        var padding = 
+        var padding =
             $("#select_medias_dialog .lazy-dialog-body").outerHeight() -
             $("#select_medias_dialog .lazy-dialog-body").height();
-        var height = 
+        var height =
             $("#select_medias_dialog .lazy-dialog-body").outerHeight() -
             $("#select_medias_dialog .nav-item").outerHeight() -
             padding / 2 - 1;
@@ -104,7 +104,7 @@ SelectMediasDialog.prototype.selectMediasValidEvent = function() {
         $selectedMedias.each(function(index, element) {
             if ($selectedMedias.length == 1) {
                 if (mediaFormat == "") {
-                    mediaUrl = $(element).data("mediaUrl");                
+                    mediaUrl = $(element).data("mediaUrl");
                 } else {
                     var media = JSON.parse(decodeURIComponent($(element).data("media")));
                     mediaUrl = media.infos.formats_urls[mediaFormat];
@@ -256,7 +256,7 @@ function selectMediasShow(event) {
     }
 
     var validEvent = $inputMediaButton.data("onValid");
-    
+
     params = {
         inputId: inputId,
         inputDisplayId: inputDisplayId,
