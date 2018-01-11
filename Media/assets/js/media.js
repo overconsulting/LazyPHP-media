@@ -21,7 +21,7 @@ SelectMediasDialog.prototype.selectMedias = function(params) {
     this.mediaCategory = params.mediaCategory != null ? params.mediaCategory : "";
 
     var selectMediasLoadEventFunctions = [];
-    if (params.loadEvent != null) {
+    if (params.loadEvent != null && params.loadEvent != "") {
         if (typeof params.loadEvent === 'function') {
             this.loadEvent = params.loadEvent;
         } else if (typeof window[params.loadEvent] === 'function') {
@@ -34,13 +34,13 @@ SelectMediasDialog.prototype.selectMedias = function(params) {
     }
 
     var selectMediasValidEventFunctions = [];
-    if (params.validEvent != null) {
+    if (params.validEvent != null && params.validEvent != "") {
         if (typeof params.validEvent === 'function') {
             this.validEvent = params.validEvent;
         } else if (typeof window[params.validEvent] === 'function') {
             this.validEvent = window[params.validEvent];
         }
-        selectMediasValidEventFunctions = [this.selectMediasValidEvent.bind(this)];
+        selectMediasValidEventFunctions = [this.selectMediasValidEvent.bind(this), this.validEvent.bind(this)];
     } else {
         this.validEvent = null;
         selectMediasValidEventFunctions = [this.selectMediasValidEvent.bind(this)];
