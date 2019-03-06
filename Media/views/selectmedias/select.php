@@ -30,7 +30,12 @@ if (!$activeSet) {
 ?>
             <li class="nav-item">
                 <a href="#medias_add" class="nav-link<?php echo $classActive; ?>" role="tab" data-toggle="tab">
-                    <i class="fa fa-plus"></i>&nbsp;Nouveau media
+                    <i class="fa fa-plus"></i>&nbsp;Nouveau média
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#medias_mass_add" class="nav-link<?php echo $classActive; ?>" role="tab" data-toggle="tab">
+                    <i class="fa fa-plus"></i>&nbsp;Ajouter des médias
                 </a>
             </li>
         </ul>
@@ -87,6 +92,19 @@ if (!$activeSet) {
                             {% input_text name="name" label="Nom" %}
                             {% input_select name="mediacategory_id" model="mediaCategory.id" label="Catégorie" options="mediacategoryOptions" %}
                             {% input_submit id="submitSelectMediasAdd" name="submit" value="save" formId="formSelectMediasAdd" class="btn-primary" icon="plus" label="Ajouter" %}
+                        {% form_close %}
+                    </div>
+                </div>
+            </div>
+
+            <div id="medias_mass_add" class="tab-pane<?php echo $classActive; ?>" role="tabpanel">
+                <div>
+                    <div class="col-xs-8 col-xs-offset-2">
+                        {% form_open id="formSelectMediasMassAdd" action="formSelectMediasMassAddAction" %}
+                            {% input_hidden name="type" model="mediaType" %}
+                            {% input_file name="images[]" multiple="multiple" label="Choisissez les médias" class="media media-image" type="image"  %}
+                            {% input_select name="mediacategory_id" model="mediaCategory.id" label="Catégorie" options="mediacategoryOptions" %}
+                            {% input_submit id="submitSelectMediasMassAdd" name="submit" value="save" formId="formSelectMediasMassAdd" class="btn-primary" icon="plus" label="Ajouter" %}
                         {% form_close %}
                     </div>
                 </div>

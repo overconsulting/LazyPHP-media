@@ -6,6 +6,7 @@ use app\controllers\FrontController;
 use Core\Session;
 use Core\Router;
 use Core\Utils;
+use Core\AttachedFile;
 
 use Media\models\Media;
 use Media\models\MediaCategory;
@@ -104,13 +105,14 @@ class SelectmediasController extends FrontController
         $this->render(
             'media::selectmedias::select',
             array(
-                'mediaGroups' => $mediaGroups,
-                'mediaType' => $mediaType,
-                'mediaCategory' => $mediaCategory,
-                'mediaFormats' => $mediaFormats,
-                'mediaFormatOptions' => $mediaFormatOptions,
-                'mediacategoryOptions' => $mediacategoryOptions,
-                'formSelectMediasAddAction' => '/media/selectmedias/add'
+                'mediaGroups'                   => $mediaGroups,
+                'mediaType'                     => $mediaType,
+                'mediaCategory'                 => $mediaCategory,
+                'mediaFormats'                  => $mediaFormats,
+                'mediaFormatOptions'            => $mediaFormatOptions,
+                'mediacategoryOptions'          => $mediacategoryOptions,
+                'formSelectMediasAddAction'     => '/media/selectmedias/add',
+                'formSelectMediasMassAddAction' => '/media/selectmedias/addmass'
             ),
             false
         );
@@ -140,6 +142,59 @@ class SelectmediasController extends FrontController
 
         echo json_encode($res);
         exit;
+    }
+
+    public function addmassAction()
+    {
+        $res = array(
+            'error' => false,
+            'message' => ''
+        );
+
+        $images = $this->request->post['images'];
+
+        foreach($images as $image) {
+            $media = new Media();
+            $media->site_id = $this->site->id;
+            $media->type = $this->request->post['type'];
+            $media->mediacategory_id = $this->request->post['mediacategory_id'];
+            $media->name = $image['name'];
+
+            var_dump($this->request->post['type']);
+
+            $file = new AttachedFile('', $image, $this->request->post['type']);
+            $hasError = false;
+            $file->valid();
+            $file->saveUploadedFile('tmp', 0, $image['name']);
+            $this->request->post['url'] = $file->url;
+
+            if ($media->save($this->request->post)) {
+                $media->generateImages();
+                echo json_encode($res);
+            } else {
+                $res['error'] = true;
+                $res['message'] = implode(' | ', $media->errors);
+                echo json_encode($res);
+                break;
+            }
+        }
+        exit;
+
+        /*if (!isset($this->request->post['name']) || $this->request->post['name'] == '') {
+            $this->request->post['name'] = date('YmdHis');
+        }
+
+        $media->site_id = $this->site->id;
+
+        if ($media->save($this->request->post)) {
+            $media->generateImages();
+        } else {
+            $res['error'] = true;
+            $res['message'] = implode(' | ', $media->errors);
+        }
+
+        echo json_encode($res);
+        exit;*/
     }
 
     public function delAction()

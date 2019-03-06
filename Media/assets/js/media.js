@@ -73,6 +73,7 @@ SelectMediasDialog.prototype.selectMediasLoadEvent = function() {
     $("#select_medias_dialog .media").on("click", this.mediaClickEvent.bind(this));
     $("#select_medias_dialog .media-del").on("click", this.mediaDelEvent.bind(this));
     $("#formSelectMediasAdd").on("submit", this.mediaAddClickEvent.bind(this));
+    $("#formSelectMediasMassAdd").on("submit", this.mediaMassAddClickEvent.bind(this));
     $($("#select_medias_dialog a[role=tab]")[0]).tab('show');
     uploadInit();
 }
@@ -201,6 +202,27 @@ SelectMediasDialog.prototype.mediaAddClickEvent = function(event) {
 
     $.ajax({
         url: formAdd.action,
+        method: "post",
+        data: postData,
+        processData: false,
+        contentType: false,
+        dataType: 'text',
+        context: this,
+        success: this.mediaAddSuccessEvent,
+        error: this.mediaAjaxErrorEvent
+    });
+
+    event.preventDefault();
+    return false;
+}
+
+SelectMediasDialog.prototype.mediaMassAddClickEvent = function(event) {
+    var formMassAdd = document.getElementById("formSelectMediasMassAdd");
+
+    var postData = new FormData(formMassAdd);
+
+    $.ajax({
+        url: formMassAdd.action,
         method: "post",
         data: postData,
         processData: false,
