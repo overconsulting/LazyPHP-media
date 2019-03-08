@@ -33,6 +33,15 @@ if (!$activeSet) {
                     <i class="fa fa-plus"></i>&nbsp;Nouveau média
                 </a>
             </li>
+<?php
+if (!$activeSet) {
+    $classActive = ' active';
+    $activeSet = true;
+} else {
+    $classActive = '';
+}
+
+?>
             <li class="nav-item">
                 <a href="#medias_mass_add" class="nav-link<?php echo $classActive; ?>" role="tab" data-toggle="tab">
                     <i class="fa fa-plus"></i>&nbsp;Ajouter des médias
@@ -97,6 +106,15 @@ if (!$activeSet) {
                 </div>
             </div>
 
+
+<?php
+    if (!$activeSet) {
+        $classActive = ' active';
+        $activeSet = true;
+    } else {
+        $classActive = '';
+    }
+?>
             <div id="medias_mass_add" class="tab-pane<?php echo $classActive; ?>" role="tabpanel">
                 <div>
                     <div class="col-xs-8 col-xs-offset-2">
