@@ -153,8 +153,6 @@ class SelectmediasController extends FrontController
 
         $images = $this->request->post['images'];
 
-        var_dump($this->request->get);
-
         foreach($images as $image) {
             $file = new AttachedFile('', $image, $this->request->post['type']);
             $file->valid();
