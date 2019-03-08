@@ -160,7 +160,7 @@ class SelectmediasController extends FrontController
             $media->mediacategory_id = $this->request->post['mediacategory_id'];
             $media->name = $image['name'];
 
-            var_dump($this->request->post['type']);
+            var_dump($this->request->post['addGal']);
 
             $file = new AttachedFile('', $image, $this->request->post['type']);
             $hasError = false;

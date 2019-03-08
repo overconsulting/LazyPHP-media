@@ -104,6 +104,7 @@ if (!$activeSet) {
                             {% input_hidden name="type" model="mediaType" %}
                             {% input_file name="images[]" multiple="multiple" label="Choisissez les médias" class="media media-image" type="image"  %}
                             {% input_select name="mediacategory_id" model="mediaCategory.id" label="Catégorie" options="mediacategoryOptions" %}
+                            {% input_checkbox name="addGal" label="Ajouter à la catégorie" %}
                             {% input_submit id="submitSelectMediasMassAdd" name="submit" value="save" formId="formSelectMediasMassAdd" class="btn-primary" icon="plus" label="Ajouter" %}
                         {% form_close %}
                     </div>
