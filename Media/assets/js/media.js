@@ -74,6 +74,7 @@ SelectMediasDialog.prototype.selectMediasLoadEvent = function() {
     $("#select_medias_dialog .media-del").on("click", this.mediaDelEvent.bind(this));
     $("#formSelectMediasAdd").on("submit", this.mediaAddClickEvent.bind(this));
     $("#formSelectMediasMassAdd").on("submit", this.mediaMassAddClickEvent.bind(this));
+    $(".select_all_medias_btn").on("click", this.selectAllClickEvent.bind(this));
     $($("#select_medias_dialog a[role=tab]")[0]).tab('show');
     uploadInit();
 }
@@ -193,6 +194,12 @@ SelectMediasDialog.prototype.mediaClickEvent = function(event) {
         '</table>';
 
     mediaProperties.innerHTML = html;
+}
+
+SelectMediasDialog.prototype.selectAllClickEvent = function(event) {
+    $(event.currentTarget).parent().children(".medias").children(".media").addClass("selected");
+    event.preventDefault();
+    return false;
 }
 
 SelectMediasDialog.prototype.mediaAddClickEvent = function(event) {

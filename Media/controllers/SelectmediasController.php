@@ -154,47 +154,22 @@ class SelectmediasController extends FrontController
         $images = $this->request->post['images'];
 
         foreach($images as $image) {
-            $media = new Media();
-            $media->site_id = $this->site->id;
-            $media->type = $this->request->post['type'];
-            $media->mediacategory_id = $this->request->post['mediacategory_id'];
-            $media->name = $image['name'];
-
-            var_dump($this->request->post['addGal']);
-
             $file = new AttachedFile('', $image, $this->request->post['type']);
-            $hasError = false;
             $file->valid();
             $file->saveUploadedFile('tmp', 0, $image['name']);
-            $this->request->post['url'] = $file->url;
+            
+            $media = new Media();
+            $image['_image_']           = "";
+            $image['image']             = $file->url;
+            $image['site_id']           = $this->site->id;
+            $image['description']       = $image['name'];
+            $image['type']              = $this->request->post['type'];
+            $image['mediacategory_id']  = $this->request->post['mediacategory_id'];
 
-            if ($media->save($this->request->post)) {
-                $media->generateImages();
-                echo json_encode($res);
-            } else {
-                $res['error'] = true;
-                $res['message'] = implode(' | ', $media->errors);
-                echo json_encode($res);
-                break;
-            }
+            $media->save($image);
         }
-        exit;
-
-        /*if (!isset($this->request->post['name']) || $this->request->post['name'] == '') {
-            $this->request->post['name'] = date('YmdHis');
-        }
-
-        $media->site_id = $this->site->id;
-
-        if ($media->save($this->request->post)) {
-            $media->generateImages();
-        } else {
-            $res['error'] = true;
-            $res['message'] = implode(' | ', $media->errors);
-        }
-
         echo json_encode($res);
-        exit;*/
+        exit;
     }
 
     public function delAction()

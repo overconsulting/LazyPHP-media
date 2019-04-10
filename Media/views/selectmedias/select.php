@@ -33,6 +33,15 @@ if (!$activeSet) {
                     <i class="fa fa-plus"></i>&nbsp;Nouveau média
                 </a>
             </li>
+<?php
+if (!$activeSet) {
+    $classActive = ' active';
+    $activeSet = true;
+} else {
+    $classActive = '';
+}
+
+?>
             <li class="nav-item">
                 <a href="#medias_mass_add" class="nav-link<?php echo $classActive; ?>" role="tab" data-toggle="tab">
                     <i class="fa fa-plus"></i>&nbsp;Ajouter des médias
@@ -53,6 +62,7 @@ foreach ($params['mediaGroups'] as $key => $mediaGroup) {
 
     echo
             '<div id="medias_'.$mediaGroup['code'].'" class="tab-pane'.$classActive.'" role="tabpanel">'.
+                '<a href="" class="btn btn-primary select_all_medias_btn">Tous</a>'.
                 '<ul class="medias">';
 
     foreach ($mediaGroup['items'] as $media) {
@@ -97,6 +107,15 @@ if (!$activeSet) {
                 </div>
             </div>
 
+
+<?php
+    if (!$activeSet) {
+        $classActive = ' active';
+        $activeSet = true;
+    } else {
+        $classActive = '';
+    }
+?>
             <div id="medias_mass_add" class="tab-pane<?php echo $classActive; ?>" role="tabpanel">
                 <div>
                     <div class="col-xs-8 col-xs-offset-2">
@@ -104,7 +123,6 @@ if (!$activeSet) {
                             {% input_hidden name="type" model="mediaType" %}
                             {% input_file name="images[]" multiple="multiple" label="Choisissez les médias" class="media media-image" type="image"  %}
                             {% input_select name="mediacategory_id" model="mediaCategory.id" label="Catégorie" options="mediacategoryOptions" %}
-                            {% input_checkbox name="addGal" label="Ajouter à la catégorie" %}
                             {% input_submit id="submitSelectMediasMassAdd" name="submit" value="save" formId="formSelectMediasMassAdd" class="btn-primary" icon="plus" label="Ajouter" %}
                         {% form_close %}
                     </div>
