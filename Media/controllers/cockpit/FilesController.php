@@ -85,4 +85,50 @@ class FilesController extends CockpitController
 
         $this->newAction();
     }
+
+    public function editAction($id)
+    {
+        $this->file = File::findById($id);
+
+        $siteOptions = Site::getOptions();
+
+        $this->render(
+            'media::files::edit',
+            array(
+                'media' => $this->file,
+                'siteOptions' => $siteOptions,
+                'selectSite' => $this->current_user->site_id === null,
+                'pageTitle' => $this->pageTitle,
+                'boxTitle' => 'Modifier le fichier',
+                'formAction' => Router::url('cockpit_media_files_update_'.$id)
+            )
+        );
+    }
+
+    public function updateAction($id)
+    {
+        $this->media = File::findById($id);
+
+        if (!isset($this->request->post['site_id'])) {
+            $this->request->post['site_id'] = $this->site->id;
+        }
+
+        if ($this->media->save($this->request->post)) {
+            $this->media->generateImages();
+            $this->addFlash('Fichier modifié', 'success');
+            $this->redirect('cockpit_media_files');
+        } else {
+            $this->addFlash('Erreur(s) dans le formulaire', 'danger');
+        }
+
+        $this->editAction($id);
+    }
+
+    function deleteAction($id) {
+        $file = File::findById($id);
+        unlink(PUBLIC_DIR.$file->file->url);
+        $file->delete();
+        $this->addFlash('Fichier supprimé', 'success');
+        $this->redirect('cockpit_media_files');
+    }
 }

@@ -9,10 +9,10 @@
     <div class="box-body">
         {% form_open id="formMedia" action="formAction" %}
 <?php if ($selectSite): ?>
-            {% input_select name="site_id" model="file.site_id" label="Site" options="siteOptions" %}
+            {% input_select name="site_id" model="media.site_id" label="Site" options="siteOptions" %}
 <?php endif; ?>
             {% input_text name="name" model="media.name" label="Nom" %}
-            {% input_upload name="file" model="file.file" label="Fichier" type="file" class="media media-image" %}
+            {% input_upload name="file" model="media.file" label="Fichier" type="file" class="media media-image" %}
             {% input_submit name="submit" value="save" formId="formMedia" class="btn-primary" icon="save" label="Enregistrer" %}
         {% form_close %}
     </div>

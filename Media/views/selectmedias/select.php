@@ -61,13 +61,13 @@ foreach ($params['mediaGroups'] as $key => $mediaGroup) {
         $mediaJson = rawurlencode(json_encode($media));
 
         echo
-                    '<li class="media" data-media-id="'.$media->id.'" data-media-url="'.$url.'" data-media="'.$mediaJson.'">'.
-                        '<img class="media-image" src="'.$url.'" />'.
-                        '<div class="media-title">'.htmlspecialchars($media->name).'</div>'.
-                        '<div class="media-actions">'.
-                            '<button type="button" class="media-del btn btn-danger btn-sm" title="Supprimer"><i class="fa fa-remove"></i></button>'.
-                        '</div>'.
-                    '</li>';
+            '<li class="media" data-media-id="'.$media->id.'" data-media-url="'.$url.'" data-media="'.$mediaJson.'">'.
+                '<img class="media-image" src="'.$url.'" />'.
+                '<div class="media-title">'.htmlspecialchars($media->name).'</div>'.
+                '<div class="media-actions">'.
+                    '<button type="button" class="media-del btn btn-danger btn-sm" title="Supprimer"><i class="fa fa-remove"></i></button>'.
+                '</div>'.
+            '</li>';
     }
 
     echo
