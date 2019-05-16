@@ -13,7 +13,7 @@ class FilesController extends CockpitController
 {
 
     function getfileAction() {
-        $attachment_location = UPLOADS_DIR.DS."".DS.$_GET['filepath'];
+        $attachment_location = UPLOADS_DIR.DS."file".DS.$_GET['filepath'];
         header($_SERVER["SERVER_PROTOCOL"] . " 200 OK");
 
         $extention = substr($attachment_location, -3);
